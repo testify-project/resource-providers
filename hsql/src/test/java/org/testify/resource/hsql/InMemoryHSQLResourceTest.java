@@ -19,38 +19,32 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testify.ResourceInstance;
 import org.testify.TestContext;
+import org.testify.annotation.Cut;
+import org.testify.annotation.Fixture;
+import org.testify.junit.UnitTest;
 
 /**
  *
  * @author saden
  */
+@RunWith(UnitTest.class)
 public class InMemoryHSQLResourceTest {
 
+    @Cut
+    @Fixture(destroy = "stop")
     InMemoryHSQLResource cut;
-    TestContext testContext;
-
-    @Before
-    public void init() {
-        cut = new InMemoryHSQLResource();
-        testContext = mock(TestContext.class);
-        given(testContext.getName()).willReturn("test");
-
-    }
-
-    @After
-    public void destroy() {
-        cut.stop();
-    }
 
     @Test
     public void configureAndStartRequiredResource() {
+        TestContext testContext = mock(TestContext.class);
+        given(testContext.getName()).willReturn("test");
+
         JDBCDataSource config = cut.configure(testContext);
         assertThat(config).isNotNull();
 

@@ -22,40 +22,35 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testify.ResourceInstance;
 import org.testify.TestContext;
+import org.testify.annotation.Cut;
+import org.testify.annotation.Fixture;
+import org.testify.junit.UnitTest;
 
 /**
  *
  * @author saden
  */
+@RunWith(UnitTest.class)
 public class ElasticsearchResourceTest {
 
-    private ElasticsearchResource cut;
-    private TestContext testContext;
-    private Settings.Builder config;
-
-    @Before
-    public void init() {
-        cut = new ElasticsearchResource();
-        testContext = mock(TestContext.class);
-        given(testContext.getName()).willReturn("test");
-        config = cut.configure(testContext);
-        assertThat(config).isNotNull();
-    }
-
-    @After
-    public void destory() {
-        cut.stop();
-    }
+    @Cut
+    @Fixture(destroy = "stop")
+    ElasticsearchResource cut;
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() {
+        TestContext testContext = mock(TestContext.class);
+        given(testContext.getName()).willReturn("test");
+
+        Settings.Builder config = cut.configure(testContext);
+        assertThat(config).isNotNull();
+
         ResourceInstance<Node, Client> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();

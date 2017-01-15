@@ -18,41 +18,36 @@ package org.testify.resource.titan;
 import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testify.ResourceInstance;
 import org.testify.TestContext;
+import org.testify.annotation.Cut;
+import org.testify.annotation.Fixture;
+import org.testify.junit.UnitTest;
 
 /**
  *
  * @author saden
  */
+@RunWith(UnitTest.class)
 public class TitanBerkeleyResourceTest {
 
+    @Cut
+    @Fixture(destroy = "stop")
     private TitanBerkeleyResource cut;
-    private TestContext testContext;
-    private CommonsConfiguration configuration;
-
-    @Before
-    public void init() {
-        cut = new TitanBerkeleyResource();
-        testContext = mock(TestContext.class);
-        given(testContext.getName()).willReturn("test");
-        configuration = cut.configure(testContext);
-        assertThat(configuration).isNotNull();
-    }
-
-    @After
-    public void destory() {
-        cut.stop();
-    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
-        ResourceInstance<TitanGraph, Void> result = cut.start(testContext, configuration);
+        TestContext testContext = mock(TestContext.class);
+        given(testContext.getName()).willReturn("test");
+
+        CommonsConfiguration config = cut.configure(testContext);
+        assertThat(config).isNotNull();
+
+        ResourceInstance<TitanGraph, Void> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isEmpty();

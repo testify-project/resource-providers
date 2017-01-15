@@ -18,39 +18,35 @@ package org.testify.resource.zookeeper;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.test.TestingServer;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testify.ResourceInstance;
 import org.testify.TestContext;
+import org.testify.annotation.Cut;
+import org.testify.annotation.Fixture;
+import org.testify.junit.UnitTest;
 
 /**
  *
  * @author saden
  */
+@RunWith(UnitTest.class)
 public class ZooKeeperResourceTest {
 
-    private ZooKeeperResource cut;
-    private TestContext testContext;
-
-    @Before
-    public void init() {
-        cut = new ZooKeeperResource();
-        testContext = mock(TestContext.class);
-        given(testContext.getName()).willReturn("test");
-        Void config = cut.configure(testContext);
-        assertThat(config).isNull();
-    }
-
-    @After
-    public void destory() {
-        cut.stop();
-    }
+    @Cut
+    @Fixture(destroy = "stop")
+    ZooKeeperResource cut;
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        given(testContext.getName()).willReturn("test");
+
+        Void config = cut.configure(testContext);
+        assertThat(config).isNull();
+
         ResourceInstance<TestingServer, CuratorFramework> result = cut.start(testContext, null);
 
         assertThat(result).isNotNull();

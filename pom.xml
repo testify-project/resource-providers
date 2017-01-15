@@ -38,6 +38,7 @@
         <module>hdfs</module>
         <module>yarn</module>
         <module>kafka</module>
+        <module>storm</module>
     </modules>
     
     <properties>
@@ -594,6 +595,18 @@
         </dependency>
 
         <!-- Test Deps -->
+        <dependency>
+            <groupId>org.testify.junit</groupId>
+            <artifactId>unit-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testify.mock</groupId>
+            <artifactId>mockito</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.testify.tools</groupId>
             <artifactId>test-logger</artifactId>
