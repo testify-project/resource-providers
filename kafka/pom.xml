@@ -29,6 +29,7 @@
     
     <properties>
         <kafka.version>0.10.0.0</kafka.version>
+        <kafka.client.version>0.10.0.0</kafka.client.version>
         <curator.version>2.11.0</curator.version>
     </properties>
     
@@ -37,7 +38,7 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka_2.11</artifactId>
-            <version>${kafka.version}</version>            
+            <version>${kafka.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -53,7 +54,7 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
-            <version>${kafka.version}</version>            
+            <version>${kafka.client.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

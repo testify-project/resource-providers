@@ -28,8 +28,7 @@
     <name>YARN Resource</name>
     
     <properties>
-        <curator.version>3.1.0</curator.version>
-        <yarn.version>2.7.2</yarn.version>
+        <yarn.version>[2.4.0,2.9.9]</yarn.version>
     </properties>
     
     <dependencies>

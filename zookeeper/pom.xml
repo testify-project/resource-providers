@@ -28,7 +28,7 @@
     <name>ZooKeeper Resource</name>
     
     <properties>
-        <curator.version>2.11.0</curator.version>
+        <curator.version>[2.6.0,)</curator.version>
     </properties>
     
     <dependencies>

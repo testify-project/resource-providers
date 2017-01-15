@@ -19,6 +19,7 @@ import org.apache.storm.Config;
 import static org.apache.storm.Config.STORM_LOCAL_DIR;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.LocalCluster;
+import org.apache.storm.utils.Utils;
 import org.testify.ResourceInstance;
 import org.testify.ResourceProvider;
 import org.testify.TestContext;
@@ -60,6 +61,7 @@ public class StormResource implements ResourceProvider<Config, LocalCluster, Voi
 
     @Override
     public void stop() {
+        Utils.sleep(2000);
         localCluster.shutdown();
     }
 

@@ -28,7 +28,7 @@
     <name>HSQL Resource</name>
     
     <properties>
-        <hsqldb.version>2.3.4</hsqldb.version>
+        <hsqldb.version>[2.3.0,)</hsqldb.version>
     </properties>
 
     <dependencies>

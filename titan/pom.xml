@@ -27,7 +27,7 @@
     <name>Titan Resource</name>
     
     <properties>
-        <titan.version>1.0.0</titan.version>
+        <titan.version>[1.0.0,)</titan.version>
     </properties>
     
     <dependencies>

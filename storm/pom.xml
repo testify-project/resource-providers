@@ -28,7 +28,7 @@
     <name>Storm Resource</name>
 
     <properties>
-        <storm.version>1.0.1</storm.version>
+        <storm.version>[1.0.0,)</storm.version>
     </properties>
     
     <dependencies>

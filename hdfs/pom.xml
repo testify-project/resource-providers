@@ -28,7 +28,7 @@
     <name>HDFS Resource</name>
     
     <properties>
-        <hdfs.version>2.7.2</hdfs.version>
+        <hdfs.version>[2.4.0,2.9.9]</hdfs.version>
     </properties>
     
     <dependencies>

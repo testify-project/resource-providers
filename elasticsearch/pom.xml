@@ -28,7 +28,7 @@
     <name>Elasticsearch Resource</name>
 
     <properties>
-        <elasticsearch.version>2.3.3</elasticsearch.version>
+        <elasticsearch.version>[2.0.0,2.9.9]</elasticsearch.version>
         <jna.version>4.2.2</jna.version>
     </properties>
     
