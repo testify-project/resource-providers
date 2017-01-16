@@ -23,7 +23,8 @@
         <artifactId>resources</artifactId>
         <version>0.1.4-SNAPSHOT</version>
     </parent>
-    
+
+    <groupId>org.testify.resources</groupId>
     <artifactId>elasticsearch</artifactId>
     <name>Elasticsearch Resource</name>
 
