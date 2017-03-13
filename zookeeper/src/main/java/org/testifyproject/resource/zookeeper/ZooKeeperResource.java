@@ -57,11 +57,10 @@ public class ZooKeeperResource implements ResourceProvider<Void, TestingServer, 
             client.start();
 
             return new ResourceInstanceBuilder<TestingServer, CuratorFramework>()
-                    .server(server)
-                    .client(client, CuratorFramework.class)
+                    .server(server, "zookeeperServer")
+                    .client(client, "zookeeperClient", CuratorFramework.class)
                     .build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
@@ -71,8 +70,7 @@ public class ZooKeeperResource implements ResourceProvider<Void, TestingServer, 
         try {
             client.close();
             server.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }

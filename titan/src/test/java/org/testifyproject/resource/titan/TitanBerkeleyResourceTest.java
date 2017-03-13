@@ -17,6 +17,7 @@ package org.testifyproject.resource.titan;
 
 import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,17 +48,19 @@ public class TitanBerkeleyResourceTest {
         CommonsConfiguration config = cut.configure(testContext);
         assertThat(config).isNotNull();
 
-        ResourceInstance<TitanGraph, Void> result = cut.start(testContext, config);
+        ResourceInstance<TitanGraph, GraphTraversalSource> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
-        assertThat(result.getClient()).isEmpty();
+        assertThat(result.getClient()).isNotEmpty();
         assertThat(result.getServer()).isNotNull();
 
         TitanGraph graph = result.getServer().getInstance();
         graph.addVertex().property("test", "test");
         graph.tx().commit();
 
-        assertThat(graph.traversal().V().has("test", "test").next()).isNotNull();
+        GraphTraversalSource graphTraversalSource = result.getClient().get().getInstance();
+
+        assertThat(graphTraversalSource.V().has("test", "test").next()).isNotNull();
     }
 
 }

@@ -64,8 +64,8 @@ public class ElasticsearchResource implements ResourceProvider<Settings.Builder,
         client = node.client();
 
         return new ResourceInstanceBuilder<Node, Client>()
-                .server(node)
-                .client(client, Client.class)
+                .server(node, "elasticsearchNode")
+                .client(client, "elasticsearchClient", Client.class)
                 .build();
     }
 

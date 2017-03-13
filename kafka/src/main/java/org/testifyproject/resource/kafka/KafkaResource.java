@@ -93,11 +93,10 @@ public class KafkaResource implements ResourceProvider<Map<String, String>, Kafk
             client = new KafkaProducer<>(producerConfig);
 
             return new ResourceInstanceBuilder<KafkaServer, KafkaProducer>()
-                    .server(server)
-                    .client(client, Producer.class)
+                    .server(server, "kafkaServer")
+                    .client(client, "kafkaProducer", Producer.class)
                     .build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
@@ -108,8 +107,7 @@ public class KafkaResource implements ResourceProvider<Map<String, String>, Kafk
             client.close();
             server.shutdown();
             zkServer.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }

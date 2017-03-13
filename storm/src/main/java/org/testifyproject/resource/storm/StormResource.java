@@ -53,7 +53,7 @@ public class StormResource implements ResourceProvider<Void, ILocalCluster, Void
         localCluster = new LocalCluster();
 
         return new ResourceInstanceBuilder<ILocalCluster, Void>()
-                .server(localCluster, ILocalCluster.class)
+                .server(localCluster, "StormLocalClusterServer", ILocalCluster.class)
                 .build();
     }
 

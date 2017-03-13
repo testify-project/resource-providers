@@ -64,8 +64,8 @@ public class MiniYarnResource implements ResourceProvider<YarnConfiguration, Min
         client.start();
 
         return new ResourceInstanceBuilder<MiniYARNCluster, YarnClient>()
-                .server(server)
-                .client(client)
+                .server(server, "miniYarnResourceServer")
+                .client(client, "miniYarnResourceClient")
                 .build();
     }
 

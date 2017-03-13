@@ -21,6 +21,9 @@ import static com.thinkaurelius.titan.diskstorage.configuration.BasicConfigurati
 import com.thinkaurelius.titan.diskstorage.configuration.ModifiableConfiguration;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
+import org.apache.tinkerpop.gremlin.process.traversal.TraversalSource;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.testifyproject.ResourceInstance;
 import org.testifyproject.ResourceProvider;
 import org.testifyproject.TestContext;
@@ -33,11 +36,12 @@ import org.testifyproject.core.util.FileSystemUtil;
  *
  * @author saden
  */
-public class TitanBerkeleyResource implements ResourceProvider<CommonsConfiguration, TitanGraph, Void> {
+public class TitanBerkeleyResource implements ResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
-    private TitanGraph graph;
+    private TitanGraph server;
+    private GraphTraversalSource client;
 
     @Override
     public CommonsConfiguration configure(TestContext testContext) {
@@ -52,21 +56,23 @@ public class TitanBerkeleyResource implements ResourceProvider<CommonsConfigurat
     }
 
     @Override
-    public ResourceInstance<TitanGraph, Void> start(TestContext testContext, CommonsConfiguration config) {
+    public ResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext, CommonsConfiguration config) {
         String storageDirectory = config.get("storage.directory", String.class);
         fileSystemUtil.recreateDirectory(storageDirectory);
 
         ModifiableConfiguration configuration = new ModifiableConfiguration(ROOT_NS, config, NONE);
-        graph = TitanFactory.open(configuration);
+        server = TitanFactory.open(configuration);
+        client = server.traversal();
 
-        return new ResourceInstanceBuilder<TitanGraph, Void>()
-                .server(graph)
+        return new ResourceInstanceBuilder<TitanGraph, GraphTraversalSource>()
+                .server(server, "titanBerkeleyServer", Graph.class)
+                .client(client, "titanBerkeleyClient", TraversalSource.class)
                 .build();
     }
 
     @Override
     public void stop() {
-        graph.close();
+        server.close();
     }
 
 }

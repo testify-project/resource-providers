@@ -58,8 +58,8 @@ public class MiniDFSResource implements ResourceProvider<HdfsConfiguration, Mini
             fileSystem = hdfsCluster.getFileSystem();
 
             return new ResourceInstanceBuilder<MiniDFSCluster, DistributedFileSystem>()
-                    .server(hdfsCluster)
-                    .client(fileSystem)
+                    .server(hdfsCluster, "hdfsMiniCluster")
+                    .client(fileSystem, "hdfsFileSystem")
                     .build();
         }
         catch (Exception e) {
