@@ -12,6 +12,8 @@ was added, changed, deprecated, removed, fix and security fixes.
 - Security - Lists security fixes to security vulnerabilities
 
 ## [Unreleased]
+
+## [0.9.0] - 2017-03-19
 ### Added
 - ResourceProvider implementations for:
  - HSQL Database
