@@ -32,13 +32,13 @@
 
     <modules>
         <module>hsql</module>
-        <module>elasticsearch</module>
         <module>zookeeper</module>
         <module>titan</module>
         <module>hdfs</module>
         <module>yarn</module>
         <module>kafka</module>
         <module>storm</module>
+        <module>elasticsearch2</module>
     </modules>
     
     <properties>
@@ -55,12 +55,13 @@
         <netbeans.inceptionYear>2016</netbeans.inceptionYear>
 
         <!-- Build Dependency Versions -->
-        <testify.version>0.9.0-SNAPSHOT</testify.version>
-        <buildtools.version>0.9.2</buildtools.version>
+        <testify.version>0.9.1</testify.version>
+        <buildtools.version>0.9.3</buildtools.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
         <plugin.compiler>3.5.1</plugin.compiler>
+        <plugin.jar>3.0.2</plugin.jar>
         <plugin.surefire>2.19.1</plugin.surefire>
         <plugin.failsafe>2.19.1</plugin.failsafe>
         <plugin.checkstyle>2.17</plugin.checkstyle>
@@ -176,21 +177,21 @@
         <repository>
             <id>oss.sonatype.org snapshot</id>
             <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>interval:360</updatePolicy>
+            </snapshots>
             <releases>
                 <enabled>false</enabled>
                 <updatePolicy>never</updatePolicy>
             </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
         </repository>
         <repository>
             <id>oss.sonatype.org releases</id>
             <url>http://oss.sonatype.org/content/repositories/releases</url>
             <releases>
                 <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
+                <updatePolicy>interval:360</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
@@ -253,6 +254,10 @@
                             <parameters />
                         </compilerArguments>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${plugin.jar}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
@@ -482,7 +487,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <configLocation>custom_checkstyle.xml</configLocation>
+                        <configLocation>testify_checkstyle.xml</configLocation>
                         <consoleOutput>true</consoleOutput>
                         <failsOnError>true</failsOnError>
                     </configuration>

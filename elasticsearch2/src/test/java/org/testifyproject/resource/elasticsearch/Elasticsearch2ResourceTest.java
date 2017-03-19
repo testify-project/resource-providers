@@ -37,11 +37,11 @@ import org.testifyproject.junit4.UnitTest;
  * @author saden
  */
 @RunWith(UnitTest.class)
-public class ElasticsearchResourceTest {
+public class Elasticsearch2ResourceTest {
 
     @Cut
     @Fixture(destroy = "stop")
-    ElasticsearchResource cut;
+    Elasticsearch2Resource cut;
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() {

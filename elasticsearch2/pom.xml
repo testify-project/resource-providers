@@ -25,20 +25,40 @@
     </parent>
 
     <groupId>org.testifyproject.resources</groupId>
-    <artifactId>elasticsearch</artifactId>
-    <name>Elasticsearch Resource</name>
+    <artifactId>elasticsearch2</artifactId>
+    <name>Elasticsearch 2 Resource</name>
 
     <properties>
-        <elasticsearch.version>[2.0.0,2.9.9]</elasticsearch.version>
+        <!-- Supported Range [2.0.0,2.4.4] -->
+        <resource.version>2.4.4</resource.version>
         <jna.version>4.2.2</jna.version>
     </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${resource.version}</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
     
     <dependencies>
         <!-- ElasticSearch -->
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>${elasticsearch.version}</version>
+            <version>${resource.version}</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>

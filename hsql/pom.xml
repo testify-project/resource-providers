@@ -28,14 +28,34 @@
     <name>HSQL Resource</name>
     
     <properties>
-        <hsqldb.version>[2.3.0,)</hsqldb.version>
+        <!-- Supported Range [2.3.0,2.3.4] -->
+        <resource.version>2.3.4</resource.version>
     </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${resource.version}</classifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>${hsqldb.version}</version>
+            <version>${resource.version}</version>
         </dependency>
         
         <!-- Test Deps -->

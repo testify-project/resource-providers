@@ -31,7 +31,7 @@ import org.testifyproject.core.util.FileSystemUtil;
  *
  * @author saden
  */
-public class ElasticsearchResource implements ResourceProvider<Settings.Builder, Node, Client> {
+public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder, Node, Client> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 

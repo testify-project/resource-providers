@@ -61,8 +61,7 @@ public class MiniDFSResource implements ResourceProvider<HdfsConfiguration, Mini
                     .server(hdfsCluster, "hdfsMiniCluster")
                     .client(fileSystem, "hdfsFileSystem")
                     .build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalStateException(e);
         }
     }
@@ -72,8 +71,7 @@ public class MiniDFSResource implements ResourceProvider<HdfsConfiguration, Mini
         try {
             fileSystem.close();
             hdfsCluster.shutdown();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
