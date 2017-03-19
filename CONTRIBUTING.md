@@ -25,12 +25,12 @@ Version tag prefix:
 ### Check out sources
 -- Via SSH (preferred for security reasons):
 ```
-$ git clone git@github.com:testify-project/testify.git
+$ git clone git@github.com:testify-project/resources.git
 ```
 - Or via HTTPS:
 
 ```
-$ git clone https://github.com/testify-project/testify.git
+$ git clone https://github.com/testify-project/resources.git
 ```
 
 ### Compile, build, and install Testify JARs into your local Maven Cache
@@ -62,4 +62,4 @@ $ git flow feature finish awesome-feature
 ```
 
 ## Issue Pull Request
-[Pull requests](https://github.com/testify-project/testify/pulls) are welcome.
+[Pull requests](https://github.com/testify-project/resources/pulls) are welcome.
