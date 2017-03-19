@@ -13,6 +13,10 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
+## [0.9.1] - 2017-03-19
+### Fixed
+- Issue with artifacts not being deployed due to [missing javadoc artifacts](https://travis-ci.org/testify-project/resources/builds/212755133)
+
 ## [0.9.0] - 2017-03-19
 ### Added
 - ResourceProvider implementations for:
