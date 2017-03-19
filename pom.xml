@@ -159,7 +159,7 @@
     <distributionManagement>
         <site>
             <id>github</id>
-            <url>scm:git:ssh://git@github.com:testify-project/maven-site.git</url>
+            <url>scm:git:ssh://git@github.com:testify-project/testify-site.git</url>
         </site>
         <snapshotRepository>
             <id>ossrh</id>
@@ -172,7 +172,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
-
+    
     <repositories>
         <repository>
             <id>oss.sonatype.org snapshot</id>
@@ -180,7 +180,7 @@
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>interval:360</updatePolicy>
-            </snapshots>
+            </snapshots> 
             <releases>
                 <enabled>false</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -283,10 +283,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <quiet>true</quiet>
-                        <sourceFileIncludes>
-                            <include>org/testifyproject/**/.java</include>
-                        </sourceFileIncludes>
+                        <subpackages>org.testifyproject</subpackages>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -435,11 +432,6 @@
                             <artifactId>coding-conventions</artifactId>
                             <version>${buildtools.version}</version>
                         </dependency>
-                        <dependency>
-                            <groupId>com.mycila</groupId>
-                            <artifactId>license-maven-plugin-git</artifactId>
-                            <version>${plugin.license}</version>
-                        </dependency>
                     </dependencies>
                     <configuration>
                         <header>license.txt</header>
@@ -515,7 +507,7 @@
             </plugins>
         </pluginManagement>
     </build>
-
+    
     <reporting>
         <plugins>
             <plugin>
@@ -537,8 +529,8 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${plugin.javadoc}</version>
                 <configuration>
-                    <doctitle>Testify Resources Documentation</doctitle>
-                    <windowtitle>Testify Resources Documentation</windowtitle>
+                    <doctitle>Testify Documentation</doctitle>
+                    <windowtitle>Testify Documentation</windowtitle>
                 </configuration>
                 <reportSets>
                     <reportSet>
@@ -615,7 +607,7 @@
     </reporting>
 
     <dependencies>
-        <!-- Testify -->
+        <!-- Testify Dependencies -->
         <dependency>
             <groupId>org.testifyproject</groupId>
             <artifactId>api</artifactId>
@@ -635,19 +627,19 @@
             <artifactId>external-guava</artifactId>
             <version>${buildtools.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.testifyproject.tools</groupId>
+            <artifactId>test-logger</artifactId>
+            <version>${buildtools.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        
         <!-- Test Deps -->
         <dependency>
             <groupId>org.testifyproject.junit4</groupId>
             <artifactId>unit-test</artifactId>
             <version>${testify.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testifyproject.tools</groupId>
-            <artifactId>test-logger</artifactId>
-            <version>${buildtools.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -668,6 +660,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Testing Dependencies -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -719,20 +712,20 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-checkstyle-plugin</artifactId>
                         <configuration>
-                            <skip>${skipTests}</skip>
+                            <skip>${skipTests}</skip>               
                         </configuration>
                     </plugin>
                     <plugin>
                         <groupId>com.mycila</groupId>
                         <artifactId>license-maven-plugin</artifactId>
                         <configuration>
-                            <skip>${skipTests}</skip>
+                            <skip>${skipTests}</skip>               
                         </configuration>
                     </plugin>
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <configuration>
-                            <skip>${skipTests}</skip>
+                            <skip>${skipTests}</skip>               
                         </configuration>
                     </plugin>
                 </plugins>
@@ -780,6 +773,9 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-source-plugin</artifactId>
                     </plugin>
                 </plugins>
             </build>
