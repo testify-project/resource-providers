@@ -13,6 +13,17 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
+## [0.9.2] - 2017-03-20
+### Added
+- Added sonatype plugin repos
+
+### Changed
+- Centralized the generation of a jar with resource version classifier
+- Contributing documentation
+
+### Fixed
+- Issue with artifacts not being deployed due to [missing javadoc artifacts](https://travis-ci.org/testify-project/resources/builds/212759300)
+
 ## [0.9.1] - 2017-03-19
 ### Fixed
 - Issue with artifacts not being deployed due to [missing javadoc artifacts](https://travis-ci.org/testify-project/resources/builds/212755133)
