@@ -15,7 +15,7 @@ $ git flow init
 Branch name for production releases: master
 Branch name for "next release" development: develop
 Feature branch prefix: feature/
-Bugfix branch prefix:
+Bugfix branch prefix: bugfix/
 Release branch prefix: release/
 Hotfix branch prefix: hotfix/
 Support branch prefix: support/
@@ -43,22 +43,30 @@ $ mvn install -Dmaven.test.skip
 $ mvn install
 ```
 
-## Adding a Feature
+## Adding a Resource
 - Create a feature:
 ```bash
-$ git flow feature start awesome-feature
+$ git flow feature start awesome-resource
 ```
-- Do some development and commit to awesome-feature branch:
+- Do some development 
+Insure that `resource.version` property is defined in the resource pom file:
+```xml
+<properties>
+    <!-- The version of the primary resource artifact (i.e. org.hsqldb:hsqldb:2.3.4) -->
+    <resource.version>2.3.4</resource.version>
+</properties>
+```
+- Commit to awesome-resource branch:
 ```bash
-$ git commit -m "awesome-feature description" .
+$ git commit -m "awesome-resource description" .
 ```
 - Publish feature:
 ```bash
-$ git flow feature publish awesome-feature
+$ git flow feature publish awesome-resource
 ```
 - Finish the feature:
 ```bash
-$ git flow feature finish awesome-feature
+$ git flow feature finish awesome-resource
 ```
 
 ## Issue Pull Request

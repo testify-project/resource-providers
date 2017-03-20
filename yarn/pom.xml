@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.testifyproject.resources</groupId>
         <artifactId>parent</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.2</version>
     </parent>
 
     <artifactId>yarn</artifactId>
@@ -31,25 +31,6 @@
         <!-- Supported Range [2.4.0,2.7.3] -->
         <resource.version>2.7.3</resource.version>
     </properties>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>${resource.version}</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
     
     <dependencies>
         <!-- Hadoop YARN-->
