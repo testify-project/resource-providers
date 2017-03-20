@@ -56,7 +56,7 @@
 
         <!-- Build Dependency Versions -->
         <testify.version>0.9.1</testify.version>
-        <buildtools.version>0.9.3</buildtools.version>
+        <buildtools.version>0.9.4</buildtools.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
@@ -199,6 +199,33 @@
             </snapshots>
         </repository>
     </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>oss.sonatype.org plugin snapshot</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>interval:360</updatePolicy>
+            </snapshots> 
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>oss.sonatype.org plugin releases</id>
+            <url>http://oss.sonatype.org/content/repositories/releases</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>interval:360</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>
@@ -630,8 +657,6 @@
         <dependency>
             <groupId>org.testifyproject.tools</groupId>
             <artifactId>test-logger</artifactId>
-            <version>${buildtools.version}</version>
-            <scope>provided</scope>
         </dependency>
         
         <!-- Test Deps -->
@@ -683,6 +708,12 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testifyproject.tools</groupId>
+                <artifactId>test-logger</artifactId>
+                <version>${buildtools.version}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
