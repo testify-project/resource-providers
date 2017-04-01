@@ -17,7 +17,7 @@ was added, changed, deprecated, removed, fix and security fixes.
 ### Changed
 - Adopted Semantic Testing
  - Updated ResourceProvider implementations to use LocalResourceProvider 
- - Updated ResourceInstance getServer() reference to getInstance()
+ - Updated ResourceInstance getServer() reference to getResource()
  - Updated ResourceInstanceBuilder server() reference to instance()
  - Updated affected code
 

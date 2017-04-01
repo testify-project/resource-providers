@@ -57,7 +57,7 @@ public class ZooKeeperResource implements LocalResourceProvider<Void, TestingSer
             client.start();
 
             return ResourceInstanceBuilder.builder()
-                    .instance(server, "zookeeperServer")
+                    .resource(server, "zookeeperServer")
                     .client(client, "zookeeperClient", CuratorFramework.class)
                     .build();
         } catch (Exception e) {

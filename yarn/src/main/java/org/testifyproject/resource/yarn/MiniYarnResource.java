@@ -64,7 +64,7 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
         client.start();
 
         return ResourceInstanceBuilder.builder()
-                .instance(server, "miniYarnResourceServer")
+                .resource(server, "miniYarnResourceServer")
                 .client(client, "miniYarnResourceClient")
                 .build();
     }

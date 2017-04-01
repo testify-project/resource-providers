@@ -51,7 +51,7 @@ public class ZooKeeperResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getInstance()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
         CuratorFramework client = result.getClient().get().getInstance();
         String testPath = client.create().forPath("/test", "test".getBytes());

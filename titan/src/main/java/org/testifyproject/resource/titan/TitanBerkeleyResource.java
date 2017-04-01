@@ -63,7 +63,7 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
         client = server.traversal();
 
         return ResourceInstanceBuilder.builder()
-                .instance(server, "titanBerkeleyServer", TitanGraph.class)
+                .resource(server, "titanBerkeleyServer", TitanGraph.class)
                 .client(client, "titanBerkeleyClient", GraphTraversalSource.class)
                 .build();
     }

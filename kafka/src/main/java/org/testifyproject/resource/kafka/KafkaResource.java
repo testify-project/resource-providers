@@ -92,7 +92,7 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
             client = new KafkaProducer<>(producerConfig);
 
             return ResourceInstanceBuilder.builder()
-                    .instance(server, "kafkaServer")
+                    .resource(server, "kafkaServer")
                     .client(client, "kafkaProducer", KafkaProducer.class)
                     .build();
         } catch (Exception e) {

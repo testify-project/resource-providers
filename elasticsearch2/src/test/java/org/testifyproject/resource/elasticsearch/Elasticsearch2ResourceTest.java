@@ -55,7 +55,7 @@ public class Elasticsearch2ResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getInstance()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
         Client client = result.getClient().get().getInstance();
         IndexRequestBuilder indexRequestBuilder = client.prepareIndex("test", "test")

@@ -64,7 +64,7 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
         client = node.client();
 
         return ResourceInstanceBuilder.builder()
-                .instance(node, "elasticsearchNode")
+                .resource(node, "elasticsearchNode")
                 .client(client, "elasticsearchClient", Client.class)
                 .build();
     }
