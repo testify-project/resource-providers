@@ -19,19 +19,19 @@ import java.io.IOException;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.hdfs.HdfsConfiguration;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
 import org.testifyproject.TestContext;
 import org.testifyproject.core.ResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of ResourceProvider that provides a local HDFS test cluster
+ * An implementation of LocalResourceProvider that provides a local HDFS test cluster
  * server and file system client.
  *
  * @author saden
  */
-public class MiniDFSResource implements ResourceProvider<HdfsConfiguration, MiniDFSCluster, DistributedFileSystem> {
+public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration, MiniDFSCluster, DistributedFileSystem> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private MiniDFSCluster hdfsCluster;
@@ -57,8 +57,8 @@ public class MiniDFSResource implements ResourceProvider<HdfsConfiguration, Mini
             hdfsCluster = builder.build();
             fileSystem = hdfsCluster.getFileSystem();
 
-            return new ResourceInstanceBuilder<MiniDFSCluster, DistributedFileSystem>()
-                    .server(hdfsCluster, "hdfsMiniCluster")
+            return ResourceInstanceBuilder.builder()
+                    .instance(hdfsCluster, "hdfsMiniCluster")
                     .client(fileSystem, "hdfsFileSystem")
                     .build();
         } catch (Exception e) {

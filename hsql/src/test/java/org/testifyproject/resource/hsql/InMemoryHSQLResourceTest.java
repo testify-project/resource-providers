@@ -49,7 +49,7 @@ public class InMemoryHSQLResourceTest {
         assertThat(config).isNotNull();
 
         ResourceInstance<DataSource, Connection> resourceInstance = cut.start(testContext, config);
-        assertThat(resourceInstance.getServer()).isNotNull();
+        assertThat(resourceInstance.getInstance()).isNotNull();
         assertThat(resourceInstance.getClient()).isPresent();
     }
 

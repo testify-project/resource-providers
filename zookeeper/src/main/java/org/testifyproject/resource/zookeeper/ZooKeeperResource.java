@@ -22,19 +22,19 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.test.TestingServer;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
 import org.testifyproject.TestContext;
 import org.testifyproject.core.ResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of ResourceProvider that provides a local ZooKeeper test
+ * An implementation of LocalResourceProvider that provides a local ZooKeeper test
  * server and client using Apache Curator.
  *
  * @author saden
  */
-public class ZooKeeperResource implements ResourceProvider<Void, TestingServer, CuratorFramework> {
+public class ZooKeeperResource implements LocalResourceProvider<Void, TestingServer, CuratorFramework> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private TestingServer server;
@@ -56,8 +56,8 @@ public class ZooKeeperResource implements ResourceProvider<Void, TestingServer, 
             client = CuratorFrameworkFactory.newClient(server.getConnectString(), retryPolicy);
             client.start();
 
-            return new ResourceInstanceBuilder<TestingServer, CuratorFramework>()
-                    .server(server, "zookeeperServer")
+            return ResourceInstanceBuilder.builder()
+                    .instance(server, "zookeeperServer")
                     .client(client, "zookeeperClient", CuratorFramework.class)
                     .build();
         } catch (Exception e) {

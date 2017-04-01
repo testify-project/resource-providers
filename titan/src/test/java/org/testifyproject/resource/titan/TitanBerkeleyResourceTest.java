@@ -52,9 +52,9 @@ public class TitanBerkeleyResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isNotEmpty();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getInstance()).isNotNull();
 
-        TitanGraph graph = result.getServer().getInstance();
+        TitanGraph graph = result.getInstance().getInstance();
         graph.addVertex().property("test", "test");
         graph.tx().commit();
 

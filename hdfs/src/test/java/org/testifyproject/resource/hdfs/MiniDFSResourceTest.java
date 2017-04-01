@@ -57,7 +57,7 @@ public class MiniDFSResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getInstance()).isNotNull();
 
         FileSystem fileSystem = result.getClient().get().getInstance();
         short replicationFactor = 2;

@@ -24,22 +24,21 @@ import kafka.server.KafkaServer;
 import kafka.utils.SystemTime$;
 import org.apache.curator.test.TestingServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.common.protocol.SecurityProtocol;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
 import org.testifyproject.TestContext;
 import org.testifyproject.core.ResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import scala.Option;
 
 /**
- * An implementation of ResourceProvider that provides a local ZooKeeper test
+ * An implementation of LocalResourceProvider that provides a local ZooKeeper test
  * server and client using Apache Curator.
  *
  * @author saden
  */
-public class KafkaResource implements ResourceProvider<Map<String, String>, KafkaServer, KafkaProducer> {
+public class KafkaResource implements LocalResourceProvider<Map<String, String>, KafkaServer, KafkaProducer> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private KafkaServer server;
@@ -92,9 +91,9 @@ public class KafkaResource implements ResourceProvider<Map<String, String>, Kafk
 
             client = new KafkaProducer<>(producerConfig);
 
-            return new ResourceInstanceBuilder<KafkaServer, KafkaProducer>()
-                    .server(server, "kafkaServer")
-                    .client(client, "kafkaProducer", Producer.class)
+            return ResourceInstanceBuilder.builder()
+                    .instance(server, "kafkaServer")
+                    .client(client, "kafkaProducer", KafkaProducer.class)
                     .build();
         } catch (Exception e) {
             throw new IllegalStateException(e);

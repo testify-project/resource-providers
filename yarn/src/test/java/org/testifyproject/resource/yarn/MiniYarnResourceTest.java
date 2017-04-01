@@ -52,9 +52,9 @@ public class MiniYarnResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getInstance()).isNotNull();
 
-        MiniYARNCluster cluster = result.getServer().getInstance();
+        MiniYARNCluster cluster = result.getInstance().getInstance();
         assertThat(cluster).isNotNull();
     }
 

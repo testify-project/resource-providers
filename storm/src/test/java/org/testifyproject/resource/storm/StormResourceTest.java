@@ -59,9 +59,9 @@ public class StormResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isEmpty();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getInstance()).isNotNull();
 
-        ILocalCluster cluster = result.getServer().getInstance();
+        ILocalCluster cluster = result.getInstance().getInstance();
 
         TopologyBuilder builder = new TopologyBuilder();
 

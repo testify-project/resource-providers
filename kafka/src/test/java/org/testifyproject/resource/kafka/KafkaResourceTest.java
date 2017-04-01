@@ -54,7 +54,7 @@ public class KafkaResourceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getInstance()).isNotNull();
 
         KafkaProducer producer = result.getClient().get().getInstance();
         ProducerRecord<String, String> record = new ProducerRecord<>("my-topic", "Test", "test");

@@ -18,19 +18,19 @@ package org.testifyproject.resource.storm;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.utils.Utils;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
 import org.testifyproject.TestContext;
 import org.testifyproject.core.ResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import static org.testifyproject.guava.common.base.StandardSystemProperty.USER_DIR;
 
 /**
- * An implementation of ResourceProvider that provides a local storm cluster.
+ * An implementation of LocalResourceProvider that provides a local storm cluster.
  *
  * @author saden
  */
-public class StormResource implements ResourceProvider<Void, ILocalCluster, Void> {
+public class StormResource implements LocalResourceProvider<Void, ILocalCluster, Void> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -52,8 +52,8 @@ public class StormResource implements ResourceProvider<Void, ILocalCluster, Void
 
         localCluster = new LocalCluster();
 
-        return new ResourceInstanceBuilder<ILocalCluster, Void>()
-                .server(localCluster, "StormLocalClusterServer", ILocalCluster.class)
+        return ResourceInstanceBuilder.builder()
+                .instance(localCluster, "StormLocalClusterServer", ILocalCluster.class)
                 .build();
     }
 

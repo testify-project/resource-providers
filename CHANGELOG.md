@@ -13,6 +13,14 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
+## [0.9.3-SNAPSHOT]
+### Changed
+- Adopted Semantic Testing
+ - Updated ResourceProvider implementations to use LocalResourceProvider 
+ - Updated ResourceInstance getServer() reference to getInstance()
+ - Updated ResourceInstanceBuilder server() reference to instance()
+ - Updated affected code
+
 ## [0.9.2] - 2017-03-20
 ### Added
 - Added sonatype plugin repos
