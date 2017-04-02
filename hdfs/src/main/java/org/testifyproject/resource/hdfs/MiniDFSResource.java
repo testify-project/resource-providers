@@ -20,9 +20,9 @@ import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.hdfs.HdfsConfiguration;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.testifyproject.LocalResourceProvider;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
@@ -48,7 +48,7 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
     }
 
     @Override
-    public ResourceInstance<MiniDFSCluster, DistributedFileSystem> start(TestContext testContext, HdfsConfiguration config) {
+    public LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> start(TestContext testContext, HdfsConfiguration config) {
         try {
             String hdfsDirectory = config.get(MiniDFSCluster.HDFS_MINIDFS_BASEDIR);
             fileSystemUtil.recreateDirectory(hdfsDirectory);
@@ -57,7 +57,7 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
             hdfsCluster = builder.build();
             fileSystem = hdfsCluster.getFileSystem();
 
-            return ResourceInstanceBuilder.builder()
+            return LocalResourceInstanceBuilder.builder()
                     .resource(hdfsCluster, "hdfsMiniCluster")
                     .client(fileSystem, "hdfsFileSystem")
                     .build();

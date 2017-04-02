@@ -23,9 +23,9 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.test.TestingServer;
 import org.testifyproject.LocalResourceProvider;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
@@ -46,7 +46,7 @@ public class ZooKeeperResource implements LocalResourceProvider<Void, TestingSer
     }
 
     @Override
-    public ResourceInstance<TestingServer, CuratorFramework> start(TestContext testContext, Void config) {
+    public LocalResourceInstance<TestingServer, CuratorFramework> start(TestContext testContext, Void config) {
         try {
             String testName = testContext.getName();
             String tempDirectory = fileSystemUtil.createPath("target", "zookeeper", testName);
@@ -56,7 +56,7 @@ public class ZooKeeperResource implements LocalResourceProvider<Void, TestingSer
             client = CuratorFrameworkFactory.newClient(server.getConnectString(), retryPolicy);
             client.start();
 
-            return ResourceInstanceBuilder.builder()
+            return LocalResourceInstanceBuilder.builder()
                     .resource(server, "zookeeperServer")
                     .client(client, "zookeeperClient", CuratorFramework.class)
                     .build();

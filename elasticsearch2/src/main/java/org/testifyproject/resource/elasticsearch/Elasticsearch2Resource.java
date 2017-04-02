@@ -20,9 +20,9 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.testifyproject.LocalResourceProvider;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
@@ -49,7 +49,7 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
     }
 
     @Override
-    public ResourceInstance<Node, Client> start(TestContext testContext, Settings.Builder config) {
+    public LocalResourceInstance<Node, Client> start(TestContext testContext, Settings.Builder config) {
         String pathHome = config.get("path.home");
         fileSystemUtil.recreateDirectory(pathHome);
 
@@ -63,7 +63,7 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
         node.start();
         client = node.client();
 
-        return ResourceInstanceBuilder.builder()
+        return LocalResourceInstanceBuilder.builder()
                 .resource(node, "elasticsearchNode")
                 .client(client, "elasticsearchClient", Client.class)
                 .build();

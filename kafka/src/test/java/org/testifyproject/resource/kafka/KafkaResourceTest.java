@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
 import org.testifyproject.annotation.Fixture;
@@ -50,7 +50,7 @@ public class KafkaResourceTest {
         Map<String, String> config = cut.configure(testContext);
         assertThat(config).isNotNull();
 
-        ResourceInstance<KafkaServer, KafkaProducer> result = cut.start(testContext, config);
+        LocalResourceInstance<KafkaServer, KafkaProducer> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();

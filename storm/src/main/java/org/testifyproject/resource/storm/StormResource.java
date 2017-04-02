@@ -19,9 +19,9 @@ import org.apache.storm.ILocalCluster;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.utils.Utils;
 import org.testifyproject.LocalResourceProvider;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import static org.testifyproject.guava.common.base.StandardSystemProperty.USER_DIR;
 
@@ -42,7 +42,7 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
     }
 
     @Override
-    public ResourceInstance<ILocalCluster, Void> start(TestContext testContext, Void config) {
+    public LocalResourceInstance<ILocalCluster, Void> start(TestContext testContext, Void config) {
         String testName = testContext.getName();
         String localDirectory = fileSystemUtil.createPath("target", "storm", testName);
         fileSystemUtil.recreateDirectory(localDirectory);
@@ -52,7 +52,7 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
 
         localCluster = new LocalCluster();
 
-        return ResourceInstanceBuilder.builder()
+        return LocalResourceInstanceBuilder.builder()
                 .resource(localCluster, "StormLocalClusterServer", ILocalCluster.class)
                 .build();
     }

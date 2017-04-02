@@ -23,9 +23,9 @@ import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfigur
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.testifyproject.LocalResourceProvider;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
@@ -54,7 +54,7 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
     }
 
     @Override
-    public ResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext, CommonsConfiguration config) {
+    public LocalResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext, CommonsConfiguration config) {
         String storageDirectory = config.get("storage.directory", String.class);
         fileSystemUtil.recreateDirectory(storageDirectory);
 
@@ -62,7 +62,7 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
         server = TitanFactory.open(configuration);
         client = server.traversal();
 
-        return ResourceInstanceBuilder.builder()
+        return LocalResourceInstanceBuilder.builder()
                 .resource(server, "titanBerkeleyServer", TitanGraph.class)
                 .client(client, "titanBerkeleyClient", GraphTraversalSource.class)
                 .build();

@@ -26,9 +26,9 @@ import org.apache.curator.test.TestingServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.protocol.SecurityProtocol;
 import org.testifyproject.LocalResourceProvider;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import scala.Option;
 
@@ -60,7 +60,7 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
     }
 
     @Override
-    public ResourceInstance<KafkaServer, KafkaProducer> start(TestContext testContext, Map<String, String> config) {
+    public LocalResourceInstance<KafkaServer, KafkaProducer> start(TestContext testContext, Map<String, String> config) {
         try {
             String testName = testContext.getName();
             //create, configure, and start a zookeeper resource
@@ -91,7 +91,7 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
 
             client = new KafkaProducer<>(producerConfig);
 
-            return ResourceInstanceBuilder.builder()
+            return LocalResourceInstanceBuilder.builder()
                     .resource(server, "kafkaServer")
                     .client(client, "kafkaProducer", KafkaProducer.class)
                     .build();

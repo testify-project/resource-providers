@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
 import org.testifyproject.annotation.Fixture;
@@ -48,7 +48,7 @@ public class InMemoryHSQLResourceTest {
         JDBCDataSource config = cut.configure(testContext);
         assertThat(config).isNotNull();
 
-        ResourceInstance<DataSource, Connection> resourceInstance = cut.start(testContext, config);
+        LocalResourceInstance<DataSource, Connection> resourceInstance = cut.start(testContext, config);
         assertThat(resourceInstance.getResource()).isNotNull();
         assertThat(resourceInstance.getClient()).isPresent();
     }

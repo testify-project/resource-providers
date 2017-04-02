@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
 import org.testifyproject.annotation.Fixture;
@@ -47,7 +47,7 @@ public class ZooKeeperResourceTest {
         Void config = cut.configure(testContext);
         assertThat(config).isNull();
 
-        ResourceInstance<TestingServer, CuratorFramework> result = cut.start(testContext, null);
+        LocalResourceInstance<TestingServer, CuratorFramework> result = cut.start(testContext, null);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
