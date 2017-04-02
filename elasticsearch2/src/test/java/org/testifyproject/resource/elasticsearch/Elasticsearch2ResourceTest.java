@@ -22,6 +22,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
@@ -29,7 +30,6 @@ import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -40,8 +40,12 @@ import org.testifyproject.junit4.UnitTest;
 public class Elasticsearch2ResourceTest {
 
     @Cut
-    @Fixture(destroy = "stop")
     Elasticsearch2Resource cut;
+
+    @After
+    public void destory() {
+        cut.stop();
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() {
