@@ -24,14 +24,14 @@ import org.apache.storm.testing.TestWordSpout;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.utils.Utils;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
 import org.testifyproject.junit4.UnitTest;
 import org.testifyproject.resource.fixture.ExclamationTopology;
 
@@ -43,8 +43,12 @@ import org.testifyproject.resource.fixture.ExclamationTopology;
 public class StormResourceTest {
 
     @Cut
-    @Fixture(destroy = "stop")
     StormResource cut;
+
+    @After
+    public void destory() {
+        cut.stop();
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource()
@@ -55,13 +59,13 @@ public class StormResourceTest {
         Void config = cut.configure(testContext);
         assertThat(config).isNull();
 
-        ResourceInstance<ILocalCluster, Void> result = cut.start(testContext, config);
+        LocalResourceInstance<ILocalCluster, Void> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isEmpty();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        ILocalCluster cluster = result.getServer().getInstance();
+        ILocalCluster cluster = result.getResource().getInstance();
 
         TopologyBuilder builder = new TopologyBuilder();
 

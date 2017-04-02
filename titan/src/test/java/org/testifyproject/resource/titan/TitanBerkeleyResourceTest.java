@@ -19,14 +19,14 @@ import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -37,8 +37,12 @@ import org.testifyproject.junit4.UnitTest;
 public class TitanBerkeleyResourceTest {
 
     @Cut
-    @Fixture(destroy = "stop")
     private TitanBerkeleyResource cut;
+
+    @After
+    public void destory() {
+        cut.stop();
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
@@ -48,13 +52,13 @@ public class TitanBerkeleyResourceTest {
         CommonsConfiguration config = cut.configure(testContext);
         assertThat(config).isNotNull();
 
-        ResourceInstance<TitanGraph, GraphTraversalSource> result = cut.start(testContext, config);
+        LocalResourceInstance<TitanGraph, GraphTraversalSource> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isNotEmpty();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        TitanGraph graph = result.getServer().getInstance();
+        TitanGraph graph = result.getResource().getInstance();
         graph.addVertex().property("test", "test");
         graph.tx().commit();
 

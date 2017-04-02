@@ -21,14 +21,14 @@ import kafka.server.KafkaServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -39,8 +39,12 @@ import org.testifyproject.junit4.UnitTest;
 public class KafkaResourceTest {
 
     @Cut
-    @Fixture(destroy = "stop")
     KafkaResource cut;
+
+    @After
+    public void destory() {
+        cut.stop();
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
@@ -50,11 +54,11 @@ public class KafkaResourceTest {
         Map<String, String> config = cut.configure(testContext);
         assertThat(config).isNotNull();
 
-        ResourceInstance<KafkaServer, KafkaProducer> result = cut.start(testContext, config);
+        LocalResourceInstance<KafkaServer, KafkaProducer> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
         KafkaProducer producer = result.getClient().get().getInstance();
         ProducerRecord<String, String> record = new ProducerRecord<>("my-topic", "Test", "test");

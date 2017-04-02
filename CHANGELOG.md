@@ -13,6 +13,13 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
+## [0.9.3-SNAPSHOT]
+### Changed
+- Upgraded Testify API version to 0.9.3 and adopted Semantic Testing
+ - Updated ResourceProvider implementations to use LocalResourceProvider 
+ - Updated LocalResourceInstance getServer() reference to getResource()
+ - Updated LocalResourceInstanceBuilder server() reference to instance()
+
 ## [0.9.2] - 2017-03-20
 ### Added
 - Added sonatype plugin repos

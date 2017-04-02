@@ -19,14 +19,14 @@ import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -37,8 +37,12 @@ import org.testifyproject.junit4.UnitTest;
 public class MiniYarnResourceTest {
 
     @Cut
-    @Fixture(destroy = "stop")
     MiniYarnResource cut;
+
+    @After
+    public void destory() {
+        cut.stop();
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() {
@@ -48,13 +52,13 @@ public class MiniYarnResourceTest {
         YarnConfiguration config = cut.configure(testContext);
         assertThat(config).isNotNull();
 
-        ResourceInstance<MiniYARNCluster, YarnClient> result = cut.start(testContext, config);
+        LocalResourceInstance<MiniYARNCluster, YarnClient> result = cut.start(testContext, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        MiniYARNCluster cluster = result.getServer().getInstance();
+        MiniYARNCluster cluster = result.getResource().getInstance();
         assertThat(cluster).isNotNull();
     }
 

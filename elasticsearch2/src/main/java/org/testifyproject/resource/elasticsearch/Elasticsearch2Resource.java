@@ -19,19 +19,19 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceProvider;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of ResourceProvider that provides a local Elasticsearch
+ * An implementation of LocalResourceProvider that provides a local Elasticsearch
  * node and client.
  *
  * @author saden
  */
-public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder, Node, Client> {
+public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Builder, Node, Client> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -49,7 +49,7 @@ public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder
     }
 
     @Override
-    public ResourceInstance<Node, Client> start(TestContext testContext, Settings.Builder config) {
+    public LocalResourceInstance<Node, Client> start(TestContext testContext, Settings.Builder config) {
         String pathHome = config.get("path.home");
         fileSystemUtil.recreateDirectory(pathHome);
 
@@ -63,8 +63,8 @@ public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder
         node.start();
         client = node.client();
 
-        return new ResourceInstanceBuilder<Node, Client>()
-                .server(node, "elasticsearchNode")
+        return LocalResourceInstanceBuilder.builder()
+                .resource(node, "elasticsearchNode")
                 .client(client, "elasticsearchClient", Client.class)
                 .build();
     }

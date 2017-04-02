@@ -21,22 +21,20 @@ import static com.thinkaurelius.titan.diskstorage.configuration.BasicConfigurati
 import com.thinkaurelius.titan.diskstorage.configuration.ModifiableConfiguration;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
-import org.apache.tinkerpop.gremlin.process.traversal.TraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceProvider;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of ResourceProvider that provides a Berkeley DB backed
+ * An implementation of LocalResourceProvider that provides a Berkeley DB backed
  * Titan graph.
  *
  * @author saden
  */
-public class TitanBerkeleyResource implements ResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
+public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -56,7 +54,7 @@ public class TitanBerkeleyResource implements ResourceProvider<CommonsConfigurat
     }
 
     @Override
-    public ResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext, CommonsConfiguration config) {
+    public LocalResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext, CommonsConfiguration config) {
         String storageDirectory = config.get("storage.directory", String.class);
         fileSystemUtil.recreateDirectory(storageDirectory);
 
@@ -64,9 +62,9 @@ public class TitanBerkeleyResource implements ResourceProvider<CommonsConfigurat
         server = TitanFactory.open(configuration);
         client = server.traversal();
 
-        return new ResourceInstanceBuilder<TitanGraph, GraphTraversalSource>()
-                .server(server, "titanBerkeleyServer", Graph.class)
-                .client(client, "titanBerkeleyClient", TraversalSource.class)
+        return LocalResourceInstanceBuilder.builder()
+                .resource(server, "titanBerkeleyServer", TitanGraph.class)
+                .client(client, "titanBerkeleyClient", GraphTraversalSource.class)
                 .build();
     }
 

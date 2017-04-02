@@ -20,19 +20,19 @@ import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import org.apache.hadoop.yarn.server.resourcemanager.scheduler.ResourceScheduler;
 import org.apache.hadoop.yarn.server.resourcemanager.scheduler.fifo.FifoScheduler;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceProvider;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of ResourceProvider that provides a local mini YARN cluster
- * and a YARN client.
+ * An implementation of LocalResourceProvider that provides a local mini YARN
+ * cluster and a YARN client.
  *
  * @author saden
  */
-public class MiniYarnResource implements ResourceProvider<YarnConfiguration, MiniYARNCluster, YarnClient> {
+public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration, MiniYARNCluster, YarnClient> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private MiniYARNCluster server;
@@ -52,7 +52,7 @@ public class MiniYarnResource implements ResourceProvider<YarnConfiguration, Min
     }
 
     @Override
-    public ResourceInstance<MiniYARNCluster, YarnClient> start(TestContext testContext, YarnConfiguration config) {
+    public LocalResourceInstance<MiniYARNCluster, YarnClient> start(TestContext testContext, YarnConfiguration config) {
         String logDirectory = config.get(YarnConfiguration.YARN_APP_CONTAINER_LOG_DIR);
         fileSystemUtil.recreateDirectory(logDirectory);
         server = new MiniYARNCluster(testContext.getName(), 1, 1, 1, 1, true);
@@ -63,8 +63,8 @@ public class MiniYarnResource implements ResourceProvider<YarnConfiguration, Min
         client.init(server.getConfig());
         client.start();
 
-        return new ResourceInstanceBuilder<MiniYARNCluster, YarnClient>()
-                .server(server, "miniYarnResourceServer")
+        return LocalResourceInstanceBuilder.builder()
+                .resource(server, "miniYarnResourceServer")
                 .client(client, "miniYarnResourceClient")
                 .build();
     }
