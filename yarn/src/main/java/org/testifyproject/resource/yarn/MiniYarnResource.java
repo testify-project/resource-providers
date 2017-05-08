@@ -20,9 +20,10 @@ import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import org.apache.hadoop.yarn.server.resourcemanager.scheduler.ResourceScheduler;
 import org.apache.hadoop.yarn.server.resourcemanager.scheduler.fifo.FifoScheduler;
-import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
+import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
@@ -52,7 +53,10 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
     }
 
     @Override
-    public LocalResourceInstance<MiniYARNCluster, YarnClient> start(TestContext testContext, YarnConfiguration config) {
+    public LocalResourceInstance<MiniYARNCluster, YarnClient> start(TestContext testContext,
+            LocalResource localResource,
+            YarnConfiguration config)
+            throws Exception {
         String logDirectory = config.get(YarnConfiguration.YARN_APP_CONTAINER_LOG_DIR);
         fileSystemUtil.recreateDirectory(logDirectory);
         server = new MiniYARNCluster(testContext.getName(), 1, 1, 1, 1, true);
@@ -70,7 +74,8 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
     }
 
     @Override
-    public void stop() {
+    public void stop(TestContext testContext, LocalResource localResource)
+            throws Exception {
         client.stop();
         server.stop();
     }

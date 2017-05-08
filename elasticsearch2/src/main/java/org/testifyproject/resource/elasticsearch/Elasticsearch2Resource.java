@@ -19,15 +19,16 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
-import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
+import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of LocalResourceProvider that provides a local Elasticsearch
- * node and client.
+ * An implementation of LocalResourceProvider that provides a local
+ * Elasticsearch node and client.
  *
  * @author saden
  */
@@ -49,7 +50,9 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
     }
 
     @Override
-    public LocalResourceInstance<Node, Client> start(TestContext testContext, Settings.Builder config) {
+    public LocalResourceInstance<Node, Client> start(TestContext testContext,
+            LocalResource localResource,
+            Settings.Builder config) throws Exception {
         String pathHome = config.get("path.home");
         fileSystemUtil.recreateDirectory(pathHome);
 
@@ -70,7 +73,8 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
     }
 
     @Override
-    public void stop() {
+    public void stop(TestContext testContext, LocalResource localResource)
+            throws Exception {
         client.close();
         node.close();
     }

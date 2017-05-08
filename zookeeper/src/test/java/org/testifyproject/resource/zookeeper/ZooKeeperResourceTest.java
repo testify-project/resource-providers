@@ -25,7 +25,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -35,23 +36,27 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class ZooKeeperResourceTest {
 
-    @Cut
-    ZooKeeperResource cut;
+    @Sut
+    ZooKeeperResource sut;
 
     @After
-    public void destory() {
-        cut.stop();
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
     }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
         given(testContext.getName()).willReturn("test");
 
-        Void config = cut.configure(testContext);
+        Void config = sut.configure(testContext);
         assertThat(config).isNull();
 
-        LocalResourceInstance<TestingServer, CuratorFramework> result = cut.start(testContext, null);
+        LocalResourceInstance<TestingServer, CuratorFramework> result = sut.start(testContext, localResource, null);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();

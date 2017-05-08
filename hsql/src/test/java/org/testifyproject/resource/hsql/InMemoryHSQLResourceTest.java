@@ -26,7 +26,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -36,23 +37,27 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class InMemoryHSQLResourceTest {
 
-    @Cut
-    InMemoryHSQLResource cut;
+    @Sut
+    InMemoryHSQLResource sut;
 
     @After
-    public void destory() {
-        cut.stop();
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
     }
 
     @Test
-    public void configureAndStartRequiredResource() {
+    public void configureAndStartRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
         given(testContext.getName()).willReturn("test");
 
-        JDBCDataSource config = cut.configure(testContext);
+        JDBCDataSource config = sut.configure(testContext);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<DataSource, Connection> resourceInstance = cut.start(testContext, config);
+        LocalResourceInstance<DataSource, Connection> resourceInstance = sut.start(testContext, localResource, config);
         assertThat(resourceInstance.getResource()).isNotNull();
         assertThat(resourceInstance.getClient()).isPresent();
     }

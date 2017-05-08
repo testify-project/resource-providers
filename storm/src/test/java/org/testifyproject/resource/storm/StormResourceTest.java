@@ -31,7 +31,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
 import org.testifyproject.resource.fixture.ExclamationTopology;
 
@@ -42,24 +43,28 @@ import org.testifyproject.resource.fixture.ExclamationTopology;
 @RunWith(UnitTest.class)
 public class StormResourceTest {
 
-    @Cut
-    StormResource cut;
+    @Sut
+    StormResource sut;
 
     @After
-    public void destory() {
-        cut.stop();
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
     }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource()
-            throws AlreadyAliveException, NotAliveException, InvalidTopologyException {
+            throws AlreadyAliveException, NotAliveException, InvalidTopologyException, Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
         given(testContext.getName()).willReturn("test");
 
-        Void config = cut.configure(testContext);
+        Void config = sut.configure(testContext);
         assertThat(config).isNull();
 
-        LocalResourceInstance<ILocalCluster, Void> result = cut.start(testContext, config);
+        LocalResourceInstance<ILocalCluster, Void> result = sut.start(testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isEmpty();

@@ -15,19 +15,19 @@
  */
 package org.testifyproject.resource.hdfs;
 
-import java.io.IOException;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.hdfs.HdfsConfiguration;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
-import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
+import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 
 /**
- * An implementation of LocalResourceProvider that provides a local HDFS test cluster
- * server and file system client.
+ * An implementation of LocalResourceProvider that provides a local HDFS test
+ * cluster server and file system client.
  *
  * @author saden
  */
@@ -48,32 +48,29 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
     }
 
     @Override
-    public LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> start(TestContext testContext, HdfsConfiguration config) {
-        try {
-            String hdfsDirectory = config.get(MiniDFSCluster.HDFS_MINIDFS_BASEDIR);
-            fileSystemUtil.recreateDirectory(hdfsDirectory);
-            config.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, hdfsDirectory);
-            MiniDFSCluster.Builder builder = new MiniDFSCluster.Builder(config);
-            hdfsCluster = builder.build();
-            fileSystem = hdfsCluster.getFileSystem();
+    public LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> start(TestContext testContext,
+            LocalResource localResource,
+            HdfsConfiguration config)
+            throws Exception {
+        String hdfsDirectory = config.get(MiniDFSCluster.HDFS_MINIDFS_BASEDIR);
+        fileSystemUtil.recreateDirectory(hdfsDirectory);
+        config.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR, hdfsDirectory);
+        MiniDFSCluster.Builder builder = new MiniDFSCluster.Builder(config);
+        hdfsCluster = builder.build();
+        fileSystem = hdfsCluster.getFileSystem();
 
-            return LocalResourceInstanceBuilder.builder()
-                    .resource(hdfsCluster, "hdfsMiniCluster")
-                    .client(fileSystem, "hdfsFileSystem")
-                    .build();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+        return LocalResourceInstanceBuilder.builder()
+                .resource(hdfsCluster, "hdfsMiniCluster")
+                .client(fileSystem, "hdfsFileSystem")
+                .build();
+
     }
 
     @Override
-    public void stop() {
-        try {
-            fileSystem.close();
-            hdfsCluster.shutdown();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+    public void stop(TestContext testContext, LocalResource localResource)
+            throws Exception {
+        fileSystem.close();
+        hdfsCluster.shutdown();
     }
 
 }

@@ -28,7 +28,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
 
 /**
@@ -38,23 +39,27 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class KafkaResourceTest {
 
-    @Cut
-    KafkaResource cut;
+    @Sut
+    KafkaResource sut;
 
     @After
-    public void destory() {
-        cut.stop();
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
     }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
         given(testContext.getName()).willReturn("test");
 
-        Map<String, String> config = cut.configure(testContext);
+        Map<String, String> config = sut.configure(testContext);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<KafkaServer, KafkaProducer> result = cut.start(testContext, config);
+        LocalResourceInstance<KafkaServer, KafkaProducer> result = sut.start(testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
