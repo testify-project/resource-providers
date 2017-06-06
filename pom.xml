@@ -23,7 +23,7 @@
 
     <groupId>org.testifyproject.resources</groupId>
     <artifactId>parent</artifactId>
-    <version>0.9.3</version>
+    <version>0.9.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     
     <name>Local Resources</name>
