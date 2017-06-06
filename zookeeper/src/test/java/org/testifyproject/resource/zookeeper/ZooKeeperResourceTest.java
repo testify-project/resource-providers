@@ -28,6 +28,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -51,9 +52,11 @@ public class ZooKeeperResourceTest {
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
 
-        Void config = sut.configure(testContext);
+        Void config = sut.configure(testContext,localResource, configReader);
         assertThat(config).isNull();
 
         LocalResourceInstance<TestingServer, CuratorFramework> result = sut.start(testContext, localResource, null);
@@ -62,7 +65,7 @@ public class ZooKeeperResourceTest {
         assertThat(result.getClient()).isPresent();
         assertThat(result.getResource()).isNotNull();
 
-        CuratorFramework client = result.getClient().get().getInstance();
+        CuratorFramework client = result.getClient().get().getValue();
         String testPath = client.create().forPath("/test", "test".getBytes());
         assertThat(testPath).isNotNull();
     }

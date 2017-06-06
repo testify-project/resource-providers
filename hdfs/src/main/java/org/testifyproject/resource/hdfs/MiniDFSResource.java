@@ -24,6 +24,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  * An implementation of LocalResourceProvider that provides a local HDFS test
@@ -38,7 +39,7 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
     private DistributedFileSystem fileSystem;
 
     @Override
-    public HdfsConfiguration configure(TestContext testContext) {
+    public HdfsConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String hdfsDirectory = fileSystemUtil.createPath("target", "hdfs", testName);
         HdfsConfiguration configuration = new HdfsConfiguration();
@@ -60,9 +61,9 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
         fileSystem = hdfsCluster.getFileSystem();
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(hdfsCluster, "hdfsMiniCluster")
-                .client(fileSystem, "hdfsFileSystem")
-                .build();
+                .resource(hdfsCluster)
+                .client(fileSystem)
+                .build("hdfs");
 
     }
 

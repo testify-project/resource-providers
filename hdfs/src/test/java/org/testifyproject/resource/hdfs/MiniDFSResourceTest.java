@@ -34,6 +34,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -57,9 +58,11 @@ public class MiniDFSResourceTest {
     public void callToStartResourceShouldReturnRequiredResource() throws IOException, Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+
         given(testContext.getName()).willReturn("test");
 
-        HdfsConfiguration config = sut.configure(testContext);
+        HdfsConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
         LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> result = sut.start(testContext, localResource, config);
@@ -68,7 +71,7 @@ public class MiniDFSResourceTest {
         assertThat(result.getClient()).isPresent();
         assertThat(result.getResource()).isNotNull();
 
-        FileSystem fileSystem = result.getClient().get().getInstance();
+        FileSystem fileSystem = result.getClient().get().getValue();
         short replicationFactor = 2;
         String fileName = "/testFile";
         Path path = new Path(fileName);

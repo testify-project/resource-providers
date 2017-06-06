@@ -28,6 +28,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  * An implementation of LocalResourceProvider that provides a Berkeley DB backed
@@ -43,7 +44,7 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
     private GraphTraversalSource client;
 
     @Override
-    public CommonsConfiguration configure(TestContext testContext) {
+    public CommonsConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String storageDirectory = fileSystemUtil.createPath("target", "elasticsearch", testName);
 
@@ -66,9 +67,9 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
         client = server.traversal();
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(server, "titanBerkeleyServer", TitanGraph.class)
-                .client(client, "titanBerkeleyClient", GraphTraversalSource.class)
-                .build();
+                .resource(server, TitanGraph.class)
+                .client(client, GraphTraversalSource.class)
+                .build("titan");
     }
 
     @Override

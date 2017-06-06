@@ -15,10 +15,10 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [0.9.3-SNAPSHOT]
 ### Changed
-- Upgraded Testify API version to 0.9.3 and adopted Semantic Testing
+- Upgraded Testify API version to 0.9.4 and adopted Semantic Testing
  - Updated ResourceProvider implementations to use LocalResourceProvider updated method signature
  - Updated LocalResourceInstance getServer() reference to getResource()
- - Updated LocalResourceInstanceBuilder server() reference to instance()
+ - Updated LocalResourceInstanceBuilder server() reference to resource()
 
 ## [0.9.2] - 2017-03-20
 ### Added

@@ -38,12 +38,5 @@
             <artifactId>hsqldb</artifactId>
             <version>${resource.version}</version>
         </dependency>
-        
-        <!-- Test Deps -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>

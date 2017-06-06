@@ -25,6 +25,7 @@ import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import static org.testifyproject.guava.common.base.StandardSystemProperty.USER_DIR;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  * An implementation of LocalResourceProvider that provides a local storm
@@ -39,7 +40,7 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
     private LocalCluster localCluster;
 
     @Override
-    public Void configure(TestContext testContext) {
+    public Void configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         return null;
     }
 
@@ -57,8 +58,8 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
         localCluster = new LocalCluster();
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(localCluster, "StormLocalClusterServer", ILocalCluster.class)
-                .build();
+                .resource(localCluster, ILocalCluster.class)
+                .build("storm");
     }
 
     @Override

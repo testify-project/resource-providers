@@ -30,6 +30,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 import scala.Option;
 
 /**
@@ -46,7 +47,7 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
     private TestingServer zkServer;
 
     @Override
-    public Map<String, String> configure(TestContext testContext) {
+    public Map<String, String> configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String logDir = fileSystemUtil.createPath("target", "kafka", testName);
 
@@ -94,9 +95,9 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
         client = new KafkaProducer<>(producerConfig);
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(server, "kafkaServer")
-                .client(client, "kafkaProducer", KafkaProducer.class)
-                .build();
+                .resource(server)
+                .client(client, KafkaProducer.class)
+                .build("kafka");
     }
 
     @Override

@@ -32,6 +32,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -55,10 +56,11 @@ public class Elasticsearch2ResourceTest {
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");
 
-        Settings.Builder config = sut.configure(testContext);
+        Settings.Builder config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
         LocalResourceInstance<Node, Client> result = sut.start(testContext, localResource, config);
@@ -67,7 +69,7 @@ public class Elasticsearch2ResourceTest {
         assertThat(result.getClient()).isPresent();
         assertThat(result.getResource()).isNotNull();
 
-        Client client = result.getClient().get().getInstance();
+        Client client = result.getClient().get().getValue();
         IndexRequestBuilder indexRequestBuilder = client.prepareIndex("test", "test")
                 .setSource("{\"message\":\"hello world\"}");
 

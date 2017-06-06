@@ -26,7 +26,7 @@
     <version>0.9.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     
-    <name>Resources</name>
+    <name>Local Resources</name>
     <description>Parent module of reusable Testify LocalResourceProvider implementations</description>
     <url>https://testify-project.github.io/resources</url>
 
@@ -55,8 +55,8 @@
         <netbeans.inceptionYear>2016</netbeans.inceptionYear>
 
         <!-- Build Dependency Versions -->
-        <testify.version>0.9.3</testify.version>
-        <buildtools.version>0.9.5</buildtools.version>
+        <testify.version>0.9.4</testify.version>
+        <buildtools.version>0.9.6</buildtools.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
@@ -97,16 +97,6 @@
         <hk2.version>2.4.0</hk2.version>
         <jersey.version>2.23.1</jersey.version>
         <guice.version>4.0</guice.version>
-        <reflections.version>0.9.10</reflections.version>
-
-        <!-- Database Dependencies -->
-        <javax.el.version>3.0.0</javax.el.version>
-        <hibernate.version>5.1.0.Final</hibernate.version>
-        <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
-        <jsoup.version>1.9.2</jsoup.version>
-        <javax.transaction.version>1.2</javax.transaction.version>
-        <javax.interceptor.version>1.2</javax.interceptor.version>
-        <postgressql.version>9.4.1207</postgressql.version>
 
         <!-- Misc Dependencies -->
         <checkstyle.version>7.0</checkstyle.version>
@@ -487,6 +477,8 @@
                             <exclude>nbproject/**</exclude>
                             <exclude>secrets/**</exclude>
                             <exclude>archetype.properties</exclude>
+                            <exclude>mvnw*</exclude>
+                            <exclude>.mvn/**</exclude>
                         </excludes>
                     </configuration>
                 </plugin>

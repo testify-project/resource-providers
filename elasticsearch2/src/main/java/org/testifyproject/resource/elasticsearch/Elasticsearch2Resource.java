@@ -25,6 +25,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  * An implementation of LocalResourceProvider that provides a local
@@ -40,7 +41,7 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
     private Client client;
 
     @Override
-    public Settings.Builder configure(TestContext testContext) {
+    public Settings.Builder configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String pathHome = fileSystemUtil.createPath("target", "elasticsearch", testName);
 
@@ -67,9 +68,9 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
         client = node.client();
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(node, "elasticsearchNode")
-                .client(client, "elasticsearchClient", Client.class)
-                .build();
+                .resource(node)
+                .client(client, Client.class)
+                .build("elasticsearch2");
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  * An implementation of LocalResourceProvider that provides a local mini YARN
@@ -40,7 +41,7 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
     private YarnClient client;
 
     @Override
-    public YarnConfiguration configure(TestContext testContext) {
+    public YarnConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String logDirectory = fileSystemUtil.createPath("target", "yarn", testName);
 
@@ -68,9 +69,9 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
         client.start();
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(server, "miniYarnResourceServer")
-                .client(client, "miniYarnResourceClient")
-                .build();
+                .resource(server)
+                .client(client)
+                .build("yarn");
     }
 
     @Override

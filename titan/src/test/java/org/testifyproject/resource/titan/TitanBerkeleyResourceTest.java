@@ -29,6 +29,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -36,40 +37,42 @@ import org.testifyproject.junit4.UnitTest;
  */
 @RunWith(UnitTest.class)
 public class TitanBerkeleyResourceTest {
-
+    
     @Sut
     private TitanBerkeleyResource sut;
-
+    
     @After
     public void destory() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
-
+        
         sut.stop(testContext, localResource);
     }
-
+    
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
-
-        CommonsConfiguration config = sut.configure(testContext);
+        
+        CommonsConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
-
+        
         LocalResourceInstance<TitanGraph, GraphTraversalSource> result = sut.start(testContext, localResource, config);
-
+        
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isNotEmpty();
         assertThat(result.getResource()).isNotNull();
-
-        TitanGraph graph = result.getResource().getInstance();
+        
+        TitanGraph graph = result.getResource().getValue();
         graph.addVertex().property("test", "test");
         graph.tx().commit();
-
-        GraphTraversalSource graphTraversalSource = result.getClient().get().getInstance();
-
+        
+        GraphTraversalSource graphTraversalSource = result.getClient().get().getValue();
+        
         assertThat(graphTraversalSource.V().has("test", "test").next()).isNotNull();
     }
-
+    
 }

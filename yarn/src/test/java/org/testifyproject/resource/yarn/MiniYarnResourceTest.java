@@ -29,6 +29,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -52,9 +53,11 @@ public class MiniYarnResourceTest {
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
 
-        YarnConfiguration config = sut.configure(testContext);
+        YarnConfiguration config = sut.configure(testContext,localResource, configReader);
         assertThat(config).isNotNull();
 
         LocalResourceInstance<MiniYARNCluster, YarnClient> result = sut.start(testContext, localResource, config);
@@ -63,7 +66,7 @@ public class MiniYarnResourceTest {
         assertThat(result.getClient()).isPresent();
         assertThat(result.getResource()).isNotNull();
 
-        MiniYARNCluster cluster = result.getResource().getInstance();
+        MiniYARNCluster cluster = result.getResource().getValue();
         assertThat(cluster).isNotNull();
     }
 

@@ -31,6 +31,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -54,9 +55,11 @@ public class KafkaResourceTest {
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+
         given(testContext.getName()).willReturn("test");
 
-        Map<String, String> config = sut.configure(testContext);
+        Map<String, String> config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
         LocalResourceInstance<KafkaServer, KafkaProducer> result = sut.start(testContext, localResource, config);
@@ -65,7 +68,7 @@ public class KafkaResourceTest {
         assertThat(result.getClient()).isPresent();
         assertThat(result.getResource()).isNotNull();
 
-        KafkaProducer producer = result.getClient().get().getInstance();
+        KafkaProducer producer = result.getClient().get().getValue();
         ProducerRecord<String, String> record = new ProducerRecord<>("my-topic", "Test", "test");
         Future response = producer.send(record);
         assertThat(response.get()).isNotNull();

@@ -27,6 +27,7 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  * An implementation of LocalResourceProvider that provides a local ZooKeeper
@@ -41,7 +42,7 @@ public class ZooKeeperResource implements LocalResourceProvider<Void, TestingSer
     private CuratorFramework client;
 
     @Override
-    public Void configure(TestContext testContext) {
+    public Void configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         return null;
     }
 
@@ -58,9 +59,9 @@ public class ZooKeeperResource implements LocalResourceProvider<Void, TestingSer
         client.start();
 
         return LocalResourceInstanceBuilder.builder()
-                .resource(server, "zookeeperServer")
-                .client(client, "zookeeperClient", CuratorFramework.class)
-                .build();
+                .resource(server)
+                .client(client, CuratorFramework.class)
+                .build("zookeeper");
     }
 
     @Override
