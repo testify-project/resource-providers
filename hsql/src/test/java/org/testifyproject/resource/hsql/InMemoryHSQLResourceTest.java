@@ -19,15 +19,17 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.hsqldb.jdbc.JDBCDataSource;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -36,20 +38,30 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class InMemoryHSQLResourceTest {
 
-    @Cut
-    @Fixture(destroy = "stop")
-    InMemoryHSQLResource cut;
+    @Sut
+    InMemoryHSQLResource sut;
+
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
+    }
 
     @Test
-    public void configureAndStartRequiredResource() {
+    public void configureAndStartRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+
         given(testContext.getName()).willReturn("test");
 
-        JDBCDataSource config = cut.configure(testContext);
+        JDBCDataSource config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        ResourceInstance<DataSource, Connection> resourceInstance = cut.start(testContext, config);
-        assertThat(resourceInstance.getServer()).isNotNull();
+        LocalResourceInstance<DataSource, Connection> resourceInstance = sut.start(testContext, localResource, config);
+        assertThat(resourceInstance.getResource()).isNotNull();
         assertThat(resourceInstance.getClient()).isPresent();
     }
 

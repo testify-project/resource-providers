@@ -18,31 +18,36 @@ package org.testifyproject.resource.storm;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.utils.Utils;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import static org.testifyproject.guava.common.base.StandardSystemProperty.USER_DIR;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of ResourceProvider that provides a local storm cluster.
+ * An implementation of LocalResourceProvider that provides a local storm
+ * cluster.
  *
  * @author saden
  */
-public class StormResource implements ResourceProvider<Void, ILocalCluster, Void> {
+public class StormResource implements LocalResourceProvider<Void, ILocalCluster, Void> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
     private LocalCluster localCluster;
 
     @Override
-    public Void configure(TestContext testContext) {
+    public Void configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         return null;
     }
 
     @Override
-    public ResourceInstance<ILocalCluster, Void> start(TestContext testContext, Void config) {
+    public LocalResourceInstance<ILocalCluster, Void> start(TestContext testContext,
+            LocalResource localResource,
+            Void config) throws Exception {
         String testName = testContext.getName();
         String localDirectory = fileSystemUtil.createPath("target", "storm", testName);
         fileSystemUtil.recreateDirectory(localDirectory);
@@ -52,13 +57,13 @@ public class StormResource implements ResourceProvider<Void, ILocalCluster, Void
 
         localCluster = new LocalCluster();
 
-        return new ResourceInstanceBuilder<ILocalCluster, Void>()
-                .server(localCluster, "StormLocalClusterServer", ILocalCluster.class)
-                .build();
+        return LocalResourceInstanceBuilder.builder()
+                .resource(localCluster, ILocalCluster.class)
+                .build("storm");
     }
 
     @Override
-    public void stop() {
+    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
         Utils.sleep(2000);
         localCluster.shutdown();
     }

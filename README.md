@@ -1,7 +1,8 @@
 # Resources
 [![Build Status](https://travis-ci.org/testify-project/resources.svg?branch=develop)](https://travis-ci.org/testify-project/resources)
-[![Github Releases](https://img.shields.io/github/downloads/testify-project/resources/latest/total.svg)]()
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.testifyproject.resources/parent/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/org.testifyproject.resources)
+[![Join the chat on Gitter](https://badges.gitter.im/testify-project/Lobby.svg)](https://gitter.im/testify-project/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CodecovIO](https://codecov.io/github/testify-project/resources/coverage.svg?branch=develop)](https://codecov.io/github/testify-project/resources?branch=develop)
+[![Maven Central](https://img.shields.io/maven-central/v/org.testifyproject.resources/parent.svg)]()
 [![License](https://img.shields.io/github/license/testify-project/resources.svg)](LICENSE)
 
 ## Overview

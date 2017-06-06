@@ -18,15 +18,17 @@ package org.testifyproject.resource.zookeeper;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.test.TestingServer;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -35,25 +37,35 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class ZooKeeperResourceTest {
 
-    @Cut
-    @Fixture(destroy = "stop")
-    ZooKeeperResource cut;
+    @Sut
+    ZooKeeperResource sut;
+
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
 
-        Void config = cut.configure(testContext);
+        Void config = sut.configure(testContext,localResource, configReader);
         assertThat(config).isNull();
 
-        ResourceInstance<TestingServer, CuratorFramework> result = cut.start(testContext, null);
+        LocalResourceInstance<TestingServer, CuratorFramework> result = sut.start(testContext, localResource, null);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        CuratorFramework client = result.getClient().get().getInstance();
+        CuratorFramework client = result.getClient().get().getValue();
         String testPath = client.create().forPath("/test", "test".getBytes());
         assertThat(testPath).isNotNull();
     }

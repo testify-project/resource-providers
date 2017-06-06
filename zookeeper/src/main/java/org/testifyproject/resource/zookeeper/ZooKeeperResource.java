@@ -16,63 +16,58 @@
 package org.testifyproject.resource.zookeeper;
 
 import java.io.File;
-import java.io.IOException;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.test.TestingServer;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of ResourceProvider that provides a local ZooKeeper test
- * server and client using Apache Curator.
+ * An implementation of LocalResourceProvider that provides a local ZooKeeper
+ * test server and client using Apache Curator.
  *
  * @author saden
  */
-public class ZooKeeperResource implements ResourceProvider<Void, TestingServer, CuratorFramework> {
+public class ZooKeeperResource implements LocalResourceProvider<Void, TestingServer, CuratorFramework> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private TestingServer server;
     private CuratorFramework client;
 
     @Override
-    public Void configure(TestContext testContext) {
+    public Void configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         return null;
     }
 
     @Override
-    public ResourceInstance<TestingServer, CuratorFramework> start(TestContext testContext, Void config) {
-        try {
-            String testName = testContext.getName();
-            String tempDirectory = fileSystemUtil.createPath("target", "zookeeper", testName);
-            File directory = fileSystemUtil.recreateDirectory(tempDirectory);
-            server = new TestingServer(-1, directory, true);
-            RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-            client = CuratorFrameworkFactory.newClient(server.getConnectString(), retryPolicy);
-            client.start();
+    public LocalResourceInstance<TestingServer, CuratorFramework> start(TestContext testContext,
+            LocalResource localResource,
+            Void config) throws Exception {
+        String testName = testContext.getName();
+        String tempDirectory = fileSystemUtil.createPath("target", "zookeeper", testName);
+        File directory = fileSystemUtil.recreateDirectory(tempDirectory);
+        server = new TestingServer(-1, directory, true);
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+        client = CuratorFrameworkFactory.newClient(server.getConnectString(), retryPolicy);
+        client.start();
 
-            return new ResourceInstanceBuilder<TestingServer, CuratorFramework>()
-                    .server(server, "zookeeperServer")
-                    .client(client, "zookeeperClient", CuratorFramework.class)
-                    .build();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+        return LocalResourceInstanceBuilder.builder()
+                .resource(server)
+                .client(client, CuratorFramework.class)
+                .build("zookeeper");
     }
 
     @Override
-    public void stop() {
-        try {
-            client.close();
-            server.close();
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
+        client.close();
+        server.close();
     }
 
 }

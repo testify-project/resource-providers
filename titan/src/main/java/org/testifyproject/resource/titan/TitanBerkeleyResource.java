@@ -21,22 +21,22 @@ import static com.thinkaurelius.titan.diskstorage.configuration.BasicConfigurati
 import com.thinkaurelius.titan.diskstorage.configuration.ModifiableConfiguration;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
-import org.apache.tinkerpop.gremlin.process.traversal.TraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of ResourceProvider that provides a Berkeley DB backed
+ * An implementation of LocalResourceProvider that provides a Berkeley DB backed
  * Titan graph.
  *
  * @author saden
  */
-public class TitanBerkeleyResource implements ResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
+public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -44,7 +44,7 @@ public class TitanBerkeleyResource implements ResourceProvider<CommonsConfigurat
     private GraphTraversalSource client;
 
     @Override
-    public CommonsConfiguration configure(TestContext testContext) {
+    public CommonsConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String storageDirectory = fileSystemUtil.createPath("target", "elasticsearch", testName);
 
@@ -56,7 +56,9 @@ public class TitanBerkeleyResource implements ResourceProvider<CommonsConfigurat
     }
 
     @Override
-    public ResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext, CommonsConfiguration config) {
+    public LocalResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext,
+            LocalResource localResource,
+            CommonsConfiguration config) throws Exception {
         String storageDirectory = config.get("storage.directory", String.class);
         fileSystemUtil.recreateDirectory(storageDirectory);
 
@@ -64,14 +66,14 @@ public class TitanBerkeleyResource implements ResourceProvider<CommonsConfigurat
         server = TitanFactory.open(configuration);
         client = server.traversal();
 
-        return new ResourceInstanceBuilder<TitanGraph, GraphTraversalSource>()
-                .server(server, "titanBerkeleyServer", Graph.class)
-                .client(client, "titanBerkeleyClient", TraversalSource.class)
-                .build();
+        return LocalResourceInstanceBuilder.builder()
+                .resource(server, TitanGraph.class)
+                .client(client, GraphTraversalSource.class)
+                .build("titan");
     }
 
     @Override
-    public void stop() {
+    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
         server.close();
     }
 

@@ -19,15 +19,17 @@ import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -36,25 +38,35 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class MiniYarnResourceTest {
 
-    @Cut
-    @Fixture(destroy = "stop")
-    MiniYarnResource cut;
+    @Sut
+    MiniYarnResource sut;
+
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
+    }
 
     @Test
-    public void callToStartResourceShouldReturnRequiredResource() {
+    public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
 
-        YarnConfiguration config = cut.configure(testContext);
+        YarnConfiguration config = sut.configure(testContext,localResource, configReader);
         assertThat(config).isNotNull();
 
-        ResourceInstance<MiniYARNCluster, YarnClient> result = cut.start(testContext, config);
+        LocalResourceInstance<MiniYARNCluster, YarnClient> result = sut.start(testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        MiniYARNCluster cluster = result.getServer().getInstance();
+        MiniYARNCluster cluster = result.getResource().getValue();
         assertThat(cluster).isNotNull();
     }
 

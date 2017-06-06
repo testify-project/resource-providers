@@ -21,15 +21,17 @@ import kafka.server.KafkaServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -38,25 +40,35 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class KafkaResourceTest {
 
-    @Cut
-    @Fixture(destroy = "stop")
-    KafkaResource cut;
+    @Sut
+    KafkaResource sut;
+
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
+    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+
         given(testContext.getName()).willReturn("test");
 
-        Map<String, String> config = cut.configure(testContext);
+        Map<String, String> config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        ResourceInstance<KafkaServer, KafkaProducer> result = cut.start(testContext, config);
+        LocalResourceInstance<KafkaServer, KafkaProducer> result = sut.start(testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        KafkaProducer producer = result.getClient().get().getInstance();
+        KafkaProducer producer = result.getClient().get().getValue();
         ProducerRecord<String, String> record = new ProducerRecord<>("my-topic", "Test", "test");
         Future response = producer.send(record);
         assertThat(response.get()).isNotNull();

@@ -19,19 +19,21 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
-import org.testifyproject.ResourceInstance;
-import org.testifyproject.ResourceProvider;
+import org.testifyproject.LocalResourceInstance;
+import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
-import org.testifyproject.core.ResourceInstanceBuilder;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of ResourceProvider that provides a local Elasticsearch
- * node and client.
+ * An implementation of LocalResourceProvider that provides a local
+ * Elasticsearch node and client.
  *
  * @author saden
  */
-public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder, Node, Client> {
+public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Builder, Node, Client> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -39,7 +41,7 @@ public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder
     private Client client;
 
     @Override
-    public Settings.Builder configure(TestContext testContext) {
+    public Settings.Builder configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String pathHome = fileSystemUtil.createPath("target", "elasticsearch", testName);
 
@@ -49,7 +51,9 @@ public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder
     }
 
     @Override
-    public ResourceInstance<Node, Client> start(TestContext testContext, Settings.Builder config) {
+    public LocalResourceInstance<Node, Client> start(TestContext testContext,
+            LocalResource localResource,
+            Settings.Builder config) throws Exception {
         String pathHome = config.get("path.home");
         fileSystemUtil.recreateDirectory(pathHome);
 
@@ -63,14 +67,15 @@ public class Elasticsearch2Resource implements ResourceProvider<Settings.Builder
         node.start();
         client = node.client();
 
-        return new ResourceInstanceBuilder<Node, Client>()
-                .server(node, "elasticsearchNode")
-                .client(client, "elasticsearchClient", Client.class)
-                .build();
+        return LocalResourceInstanceBuilder.builder()
+                .resource(node)
+                .client(client, Client.class)
+                .build("elasticsearch2");
     }
 
     @Override
-    public void stop() {
+    public void stop(TestContext testContext, LocalResource localResource)
+            throws Exception {
         client.close();
         node.close();
     }

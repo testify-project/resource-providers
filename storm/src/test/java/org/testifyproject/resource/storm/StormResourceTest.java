@@ -24,16 +24,18 @@ import org.apache.storm.testing.TestWordSpout;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.utils.Utils;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
 import org.testifyproject.resource.fixture.ExclamationTopology;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -41,41 +43,51 @@ import org.testifyproject.resource.fixture.ExclamationTopology;
  */
 @RunWith(UnitTest.class)
 public class StormResourceTest {
-
-    @Cut
-    @Fixture(destroy = "stop")
-    StormResource cut;
-
+    
+    @Sut
+    StormResource sut;
+    
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        
+        sut.stop(testContext, localResource);
+    }
+    
     @Test
     public void callToStartResourceShouldReturnRequiredResource()
-            throws AlreadyAliveException, NotAliveException, InvalidTopologyException {
+            throws AlreadyAliveException, NotAliveException, InvalidTopologyException, Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
-
-        Void config = cut.configure(testContext);
+        
+        Void config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNull();
-
-        ResourceInstance<ILocalCluster, Void> result = cut.start(testContext, config);
-
+        
+        LocalResourceInstance<ILocalCluster, Void> result = sut.start(testContext, localResource, config);
+        
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isEmpty();
-        assertThat(result.getServer()).isNotNull();
-
-        ILocalCluster cluster = result.getServer().getInstance();
-
+        assertThat(result.getResource()).isNotNull();
+        
+        ILocalCluster cluster = result.getResource().getValue();
+        
         TopologyBuilder builder = new TopologyBuilder();
-
+        
         builder.setSpout("word", new TestWordSpout(), 10);
         builder.setBolt("exclaim1", new ExclamationTopology.ExclamationBolt(), 3).shuffleGrouping("word");
         builder.setBolt("exclaim2", new ExclamationTopology.ExclamationBolt(), 2).shuffleGrouping("exclaim1");
-
+        
         Config conf = new Config();
         conf.setDebug(true);
         conf.setNumWorkers(3);
-
+        
         cluster.submitTopology("exclaim", conf, builder.createTopology());
         Utils.sleep(2000);
         cluster.killTopology("exclaim");
     }
-
+    
 }

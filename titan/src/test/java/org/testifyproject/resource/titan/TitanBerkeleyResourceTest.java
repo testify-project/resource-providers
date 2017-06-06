@@ -19,15 +19,17 @@ import com.thinkaurelius.titan.core.TitanGraph;
 import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -35,32 +37,42 @@ import org.testifyproject.junit4.UnitTest;
  */
 @RunWith(UnitTest.class)
 public class TitanBerkeleyResourceTest {
-
-    @Cut
-    @Fixture(destroy = "stop")
-    private TitanBerkeleyResource cut;
-
+    
+    @Sut
+    private TitanBerkeleyResource sut;
+    
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        
+        sut.stop(testContext, localResource);
+    }
+    
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+        
         given(testContext.getName()).willReturn("test");
-
-        CommonsConfiguration config = cut.configure(testContext);
+        
+        CommonsConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
-
-        ResourceInstance<TitanGraph, GraphTraversalSource> result = cut.start(testContext, config);
-
+        
+        LocalResourceInstance<TitanGraph, GraphTraversalSource> result = sut.start(testContext, localResource, config);
+        
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isNotEmpty();
-        assertThat(result.getServer()).isNotNull();
-
-        TitanGraph graph = result.getServer().getInstance();
+        assertThat(result.getResource()).isNotNull();
+        
+        TitanGraph graph = result.getResource().getValue();
         graph.addVertex().property("test", "test");
         graph.tx().commit();
-
-        GraphTraversalSource graphTraversalSource = result.getClient().get().getInstance();
-
+        
+        GraphTraversalSource graphTraversalSource = result.getClient().get().getValue();
+        
         assertThat(graphTraversalSource.V().has("test", "test").next()).isNotNull();
     }
-
+    
 }

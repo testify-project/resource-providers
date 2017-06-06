@@ -24,15 +24,17 @@ import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.hdfs.HdfsConfiguration;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import org.testifyproject.ResourceInstance;
+import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
-import org.testifyproject.annotation.Cut;
-import org.testifyproject.annotation.Fixture;
+import org.testifyproject.annotation.LocalResource;
+import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
+import org.testifyproject.trait.PropertiesReader;
 
 /**
  *
@@ -41,25 +43,35 @@ import org.testifyproject.junit4.UnitTest;
 @RunWith(UnitTest.class)
 public class MiniDFSResourceTest {
 
-    @Cut
-    @Fixture(destroy = "stop")
-    MiniDFSResource cut;
+    @Sut
+    MiniDFSResource sut;
+
+    @After
+    public void destory() throws Exception {
+        TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+
+        sut.stop(testContext, localResource);
+    }
 
     @Test
-    public void callToStartResourceShouldReturnRequiredResource() throws IOException {
+    public void callToStartResourceShouldReturnRequiredResource() throws IOException, Exception {
         TestContext testContext = mock(TestContext.class);
+        LocalResource localResource = mock(LocalResource.class);
+        PropertiesReader configReader = mock(PropertiesReader.class);
+
         given(testContext.getName()).willReturn("test");
 
-        HdfsConfiguration config = cut.configure(testContext);
+        HdfsConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        ResourceInstance<MiniDFSCluster, DistributedFileSystem> result = cut.start(testContext, config);
+        LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> result = sut.start(testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
-        assertThat(result.getServer()).isNotNull();
+        assertThat(result.getResource()).isNotNull();
 
-        FileSystem fileSystem = result.getClient().get().getInstance();
+        FileSystem fileSystem = result.getClient().get().getValue();
         short replicationFactor = 2;
         String fileName = "/testFile";
         Path path = new Path(fileName);

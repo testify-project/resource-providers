@@ -11,7 +11,7 @@ Testify uses a Maven-based build system. To build from source follow the bellow 
 - [Install GitFlow](http://danielkummer.github.io/git-flow-cheatsheet)
 - Initialize GitFlow:
 ```bash
-$ git flow init
+git flow init
 Branch name for production releases: master
 Branch name for "next release" development: develop
 Feature branch prefix: feature/
@@ -25,28 +25,28 @@ Version tag prefix:
 ### Check out sources
 -- Via SSH (preferred for security reasons):
 ```
-$ git clone git@github.com:testify-project/resources.git
+git clone git@github.com:testify-project/resources.git
 ```
 - Or via HTTPS:
 
 ```
-$ git clone https://github.com/testify-project/resources.git
+git clone https://github.com/testify-project/resources.git
 ```
 
 ### Compile, build, and install Testify JARs into your local Maven Cache
 ```
-$ mvn install -Dmaven.test.skip
+./mvnw install -Dmaven.test.skip
 ```
 
 ### Compile, test, build, and install Testify JARs into your local Maven Cache
 ```
-$ mvn install
+./mvnw install
 ```
 
 ## Adding a Resource
 - Create a feature:
 ```bash
-$ git flow feature start awesome-resource
+git flow feature start awesome-resource
 ```
 - Do some development 
 Insure that `resource.version` property is defined in the resource pom file:
@@ -58,15 +58,15 @@ Insure that `resource.version` property is defined in the resource pom file:
 ```
 - Commit to awesome-resource branch:
 ```bash
-$ git commit -m "awesome-resource description" .
+git commit -m "awesome-resource description" .
 ```
 - Publish feature:
 ```bash
-$ git flow feature publish awesome-resource
+git flow feature publish awesome-resource
 ```
 - Finish the feature:
 ```bash
-$ git flow feature finish awesome-resource
+git flow feature finish awesome-resource
 ```
 
 ## Issue Pull Request
