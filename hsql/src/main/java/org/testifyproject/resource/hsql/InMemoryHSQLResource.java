@@ -64,7 +64,7 @@ public class InMemoryHSQLResource
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource)
+    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<DataSource, Connection> instance)
             throws Exception {
         server.getConnection()
                 .createStatement()

@@ -73,7 +73,10 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
+    public void stop(TestContext testContext,
+            LocalResource localResource,
+            LocalResourceInstance<TitanGraph, GraphTraversalSource> instance)
+            throws Exception {
         server.close();
     }
 

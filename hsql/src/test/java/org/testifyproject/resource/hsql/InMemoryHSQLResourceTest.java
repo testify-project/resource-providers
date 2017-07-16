@@ -19,7 +19,6 @@ import java.sql.Connection;
 import javax.sql.DataSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.hsqldb.jdbc.JDBCDataSource;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
@@ -41,14 +40,6 @@ public class InMemoryHSQLResourceTest {
     @Sut
     InMemoryHSQLResource sut;
 
-    @After
-    public void destory() throws Exception {
-        TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
-
-        sut.stop(testContext, localResource);
-    }
-
     @Test
     public void configureAndStartRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
@@ -60,9 +51,12 @@ public class InMemoryHSQLResourceTest {
         JDBCDataSource config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<DataSource, Connection> resourceInstance = sut.start(testContext, localResource, config);
-        assertThat(resourceInstance.getResource()).isNotNull();
-        assertThat(resourceInstance.getClient()).isPresent();
+        LocalResourceInstance<DataSource, Connection> result = sut.start(testContext, localResource, config);
+
+        assertThat(result.getResource()).isNotNull();
+        assertThat(result.getClient()).isPresent();
+
+        sut.stop(testContext, localResource, result);
     }
 
 }

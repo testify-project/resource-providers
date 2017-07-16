@@ -65,7 +65,10 @@ public class ZooKeeperResource implements LocalResourceProvider<Void, TestingSer
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
+    public void stop(TestContext testContext,
+            LocalResource localResource,
+            LocalResourceInstance<TestingServer, CuratorFramework> instance)
+            throws Exception {
         client.close();
         server.close();
     }

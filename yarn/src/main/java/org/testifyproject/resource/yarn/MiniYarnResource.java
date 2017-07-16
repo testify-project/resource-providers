@@ -75,7 +75,9 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource)
+    public void stop(TestContext testContext,
+            LocalResource localResource,
+            LocalResourceInstance<MiniYARNCluster, YarnClient> instance)
             throws Exception {
         client.stop();
         server.stop();

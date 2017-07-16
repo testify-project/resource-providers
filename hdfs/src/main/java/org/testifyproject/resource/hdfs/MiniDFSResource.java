@@ -68,7 +68,7 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource)
+    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> instance)
             throws Exception {
         fileSystem.close();
         hdfsCluster.shutdown();

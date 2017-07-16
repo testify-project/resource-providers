@@ -101,7 +101,10 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
+    public void stop(TestContext testContext,
+            LocalResource localResource,
+            LocalResourceInstance<KafkaServer, KafkaProducer> instance)
+            throws Exception {
         client.close();
         server.shutdown();
         zkServer.close();
