@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.testifyproject.resources</groupId>
         <artifactId>parent</artifactId>
-        <version>0.9.4</version>
+        <version>0.9.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>hdfs</artifactId>
