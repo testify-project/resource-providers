@@ -13,13 +13,13 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
-## [0.9.4-SNAPSHOT]
+## [0.9.4] - 2017-07-16
 ### Changed
 - Updated to the latest Testify API version 0.9.6
 - Updated and added LocalResourceInstance paramter to LocalResourceProvider#stop method
 
-## [0.9.3]
-### Changed
+## [0.9.3] - 2017-06-06
+### Changed 
 - Upgraded Testify API version to 0.9.4 and adopted Semantic Testing
  - Updated ResourceProvider implementations to use LocalResourceProvider updated method signature
  - Updated LocalResourceInstance getServer() reference to getResource()
