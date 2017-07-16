@@ -19,7 +19,6 @@ import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
@@ -41,23 +40,15 @@ public class MiniYarnResourceTest {
     @Sut
     MiniYarnResource sut;
 
-    @After
-    public void destory() throws Exception {
-        TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
-
-        sut.stop(testContext, localResource);
-    }
-
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
         PropertiesReader configReader = mock(PropertiesReader.class);
-        
+
         given(testContext.getName()).willReturn("test");
 
-        YarnConfiguration config = sut.configure(testContext,localResource, configReader);
+        YarnConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
         LocalResourceInstance<MiniYARNCluster, YarnClient> result = sut.start(testContext, localResource, config);
@@ -68,6 +59,9 @@ public class MiniYarnResourceTest {
 
         MiniYARNCluster cluster = result.getResource().getValue();
         assertThat(cluster).isNotNull();
+
+        sut.stop(testContext, localResource, result);
+
     }
 
 }

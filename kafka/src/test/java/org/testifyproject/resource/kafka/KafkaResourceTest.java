@@ -21,7 +21,6 @@ import kafka.server.KafkaServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
@@ -42,14 +41,6 @@ public class KafkaResourceTest {
 
     @Sut
     KafkaResource sut;
-
-    @After
-    public void destory() throws Exception {
-        TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
-
-        sut.stop(testContext, localResource);
-    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
@@ -72,6 +63,8 @@ public class KafkaResourceTest {
         ProducerRecord<String, String> record = new ProducerRecord<>("my-topic", "Test", "test");
         Future response = producer.send(record);
         assertThat(response.get()).isNotNull();
+
+        sut.stop(testContext, localResource, result);
     }
 
 }

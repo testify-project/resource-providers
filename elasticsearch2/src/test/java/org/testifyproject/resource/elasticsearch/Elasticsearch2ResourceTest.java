@@ -22,7 +22,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
@@ -43,14 +42,6 @@ public class Elasticsearch2ResourceTest {
 
     @Sut
     Elasticsearch2Resource sut;
-
-    @After
-    public void destory() throws Exception {
-        TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
-
-        sut.stop(testContext, localResource);
-    }
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
@@ -81,7 +72,10 @@ public class Elasticsearch2ResourceTest {
                 + "    }\n"
                 + "}")
                 .get();
+
         assertThat(searchResponse).isNotNull();
+
+        sut.stop(testContext, localResource, result);
     }
 
 }

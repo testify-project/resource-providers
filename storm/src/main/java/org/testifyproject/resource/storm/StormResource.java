@@ -63,7 +63,7 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource) throws Exception {
+    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<ILocalCluster, Void> instance) throws Exception {
         Utils.sleep(2000);
         localCluster.shutdown();
     }

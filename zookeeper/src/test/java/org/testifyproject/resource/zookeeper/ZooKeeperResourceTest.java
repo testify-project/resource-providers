@@ -18,7 +18,6 @@ package org.testifyproject.resource.zookeeper;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.test.TestingServer;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
@@ -40,23 +39,15 @@ public class ZooKeeperResourceTest {
     @Sut
     ZooKeeperResource sut;
 
-    @After
-    public void destory() throws Exception {
-        TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
-
-        sut.stop(testContext, localResource);
-    }
-
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
         LocalResource localResource = mock(LocalResource.class);
         PropertiesReader configReader = mock(PropertiesReader.class);
-        
+
         given(testContext.getName()).willReturn("test");
 
-        Void config = sut.configure(testContext,localResource, configReader);
+        Void config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNull();
 
         LocalResourceInstance<TestingServer, CuratorFramework> result = sut.start(testContext, localResource, null);
@@ -68,6 +59,8 @@ public class ZooKeeperResourceTest {
         CuratorFramework client = result.getClient().get().getValue();
         String testPath = client.create().forPath("/test", "test".getBytes());
         assertThat(testPath).isNotNull();
+
+        sut.stop(testContext, localResource, result);
     }
 
 }

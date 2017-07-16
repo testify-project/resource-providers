@@ -74,7 +74,7 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource)
+    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<Node, Client> instance)
             throws Exception {
         client.close();
         node.close();
