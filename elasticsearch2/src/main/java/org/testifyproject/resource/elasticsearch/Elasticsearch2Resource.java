@@ -70,7 +70,7 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
         return LocalResourceInstanceBuilder.builder()
                 .resource(node)
                 .client(client, Client.class)
-                .build("elasticsearch2");
+                .build("elasticsearch2", localResource);
     }
 
     @Override

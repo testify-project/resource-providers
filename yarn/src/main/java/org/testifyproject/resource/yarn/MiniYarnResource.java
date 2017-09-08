@@ -71,7 +71,7 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
         return LocalResourceInstanceBuilder.builder()
                 .resource(server)
                 .client(client)
-                .build("yarn");
+                .build("yarn", localResource);
     }
 
     @Override

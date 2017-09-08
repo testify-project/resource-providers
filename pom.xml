@@ -26,7 +26,7 @@
     <version>0.9.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     
-    <name>Local Resources</name>
+    <name>[Local Resources]</name>
     <description>Parent module of reusable Testify LocalResourceProvider implementations</description>
     <url>https://testify-project.github.io/resources</url>
 
@@ -55,7 +55,7 @@
         <netbeans.inceptionYear>2016</netbeans.inceptionYear>
 
         <!-- Build Dependency Versions -->
-        <testify.version>0.9.6</testify.version>
+        <testify.version>0.9.9-SNAPSHOT</testify.version>
         <buildtools.version>0.9.7</buildtools.version>
 
         <!-- Plugin Versions -->

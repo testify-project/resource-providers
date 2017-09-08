@@ -97,7 +97,7 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
         return LocalResourceInstanceBuilder.builder()
                 .resource(server)
                 .client(client, KafkaProducer.class)
-                .build("kafka");
+                .build("kafka", localResource);
     }
 
     @Override

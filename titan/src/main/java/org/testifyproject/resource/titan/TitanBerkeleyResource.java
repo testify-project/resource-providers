@@ -69,7 +69,7 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
         return LocalResourceInstanceBuilder.builder()
                 .resource(server, TitanGraph.class)
                 .client(client, GraphTraversalSource.class)
-                .build("titan");
+                .build("titan", localResource);
     }
 
     @Override

@@ -63,7 +63,7 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
         return LocalResourceInstanceBuilder.builder()
                 .resource(hdfsCluster)
                 .client(fileSystem)
-                .build("hdfs");
+                .build("hdfs", localResource);
 
     }
 

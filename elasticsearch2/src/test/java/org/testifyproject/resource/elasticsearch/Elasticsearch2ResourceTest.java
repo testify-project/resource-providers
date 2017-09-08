@@ -24,6 +24,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
@@ -46,7 +47,7 @@ public class Elasticsearch2ResourceTest {
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
+        LocalResource localResource = mock(LocalResource.class, Answers.RETURNS_MOCKS);
         PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");

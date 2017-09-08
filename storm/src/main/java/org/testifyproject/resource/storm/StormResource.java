@@ -59,7 +59,7 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
 
         return LocalResourceInstanceBuilder.builder()
                 .resource(localCluster, ILocalCluster.class)
-                .build("storm");
+                .build("storm", localResource);
     }
 
     @Override

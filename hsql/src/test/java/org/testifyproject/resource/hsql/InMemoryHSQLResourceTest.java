@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
@@ -43,7 +44,7 @@ public class InMemoryHSQLResourceTest {
     @Test
     public void configureAndStartRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
+        LocalResource localResource = mock(LocalResource.class, Answers.RETURNS_MOCKS);
         PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");
