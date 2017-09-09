@@ -54,6 +54,9 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
         Map<String, String> brokerConfig = new HashMap<>();
         brokerConfig.put("broker.id", "0");
         brokerConfig.put("zookeeper.connect", "localhost:0");
+        brokerConfig.put("zookeeper.session.timeout.ms", "10000");
+        brokerConfig.put("zookeeper.connection.timeout.ms", "10000");
+        brokerConfig.put("group.min.session.timeout.ms", "10000");
         brokerConfig.put("log.dir", logDir);
         brokerConfig.put("port", "0");
 
