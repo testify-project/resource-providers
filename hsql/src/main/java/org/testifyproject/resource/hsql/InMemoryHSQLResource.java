@@ -16,8 +16,11 @@
 package org.testifyproject.resource.hsql;
 
 import static java.lang.String.format;
+
 import java.sql.Connection;
+
 import javax.sql.DataSource;
+
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.LocalResourceProvider;
@@ -27,8 +30,8 @@ import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of LocalResourceProvider that provides an in-memory HSQL
- * DataSource and connection.
+ * An implementation of LocalResourceProvider that provides an in-memory HSQL DataSource
+ * and connection.
  *
  * @author saden
  */
@@ -39,9 +42,11 @@ public class InMemoryHSQLResource
     private Connection client;
 
     @Override
-    public JDBCDataSource configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public JDBCDataSource configure(TestContext testContext, LocalResource localResource,
+            PropertiesReader configReader) {
         JDBCDataSource dataSource = new JDBCDataSource();
-        dataSource.setUrl(format("jdbc:hsqldb:mem:%s?default_schema=public", testContext.getName()));
+        dataSource.setUrl(format("jdbc:hsqldb:mem:%s?default_schema=public", testContext
+                .getName()));
         dataSource.setUser("sa");
         dataSource.setPassword("");
 
@@ -64,7 +69,8 @@ public class InMemoryHSQLResource
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<DataSource, Connection> instance)
+    public void stop(TestContext testContext, LocalResource localResource,
+            LocalResourceInstance<DataSource, Connection> instance)
             throws Exception {
         server.getConnection()
                 .createStatement()

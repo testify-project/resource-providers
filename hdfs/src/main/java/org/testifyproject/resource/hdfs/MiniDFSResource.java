@@ -27,19 +27,21 @@ import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of LocalResourceProvider that provides a local HDFS test
- * cluster server and file system client.
+ * An implementation of LocalResourceProvider that provides a local HDFS test cluster
+ * server and file system client.
  *
  * @author saden
  */
-public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration, MiniDFSCluster, DistributedFileSystem> {
+public class MiniDFSResource implements
+        LocalResourceProvider<HdfsConfiguration, MiniDFSCluster, DistributedFileSystem> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private MiniDFSCluster hdfsCluster;
     private DistributedFileSystem fileSystem;
 
     @Override
-    public HdfsConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public HdfsConfiguration configure(TestContext testContext,
+            LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String hdfsDirectory = fileSystemUtil.createPath("target", "hdfs", testName);
         HdfsConfiguration configuration = new HdfsConfiguration();
@@ -49,7 +51,8 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
     }
 
     @Override
-    public LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> start(TestContext testContext,
+    public LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> start(
+            TestContext testContext,
             LocalResource localResource,
             HdfsConfiguration config)
             throws Exception {
@@ -68,7 +71,8 @@ public class MiniDFSResource implements LocalResourceProvider<HdfsConfiguration,
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> instance)
+    public void stop(TestContext testContext, LocalResource localResource,
+            LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> instance)
             throws Exception {
         fileSystem.close();
         hdfsCluster.shutdown();

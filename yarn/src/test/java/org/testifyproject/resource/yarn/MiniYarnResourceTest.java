@@ -15,15 +15,16 @@
  */
 package org.testifyproject.resource.yarn;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.server.MiniYARNCluster;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
@@ -52,7 +53,8 @@ public class MiniYarnResourceTest {
         YarnConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<MiniYARNCluster, YarnClient> result = sut.start(testContext, localResource, config);
+        LocalResourceInstance<MiniYARNCluster, YarnClient> result = sut.start(testContext,
+                localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();

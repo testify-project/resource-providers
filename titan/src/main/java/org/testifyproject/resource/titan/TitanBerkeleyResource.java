@@ -15,12 +15,9 @@
  */
 package org.testifyproject.resource.titan;
 
-import com.thinkaurelius.titan.core.TitanFactory;
-import com.thinkaurelius.titan.core.TitanGraph;
 import static com.thinkaurelius.titan.diskstorage.configuration.BasicConfiguration.Restriction.NONE;
-import com.thinkaurelius.titan.diskstorage.configuration.ModifiableConfiguration;
-import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 import static com.thinkaurelius.titan.graphdb.configuration.GraphDatabaseConfiguration.ROOT_NS;
+
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.LocalResourceProvider;
@@ -30,13 +27,19 @@ import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
 
+import com.thinkaurelius.titan.core.TitanFactory;
+import com.thinkaurelius.titan.core.TitanGraph;
+import com.thinkaurelius.titan.diskstorage.configuration.ModifiableConfiguration;
+import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
+
 /**
- * An implementation of LocalResourceProvider that provides a Berkeley DB backed
- * Titan graph.
+ * An implementation of LocalResourceProvider that provides a Berkeley DB backed Titan
+ * graph.
  *
  * @author saden
  */
-public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
+public class TitanBerkeleyResource implements
+        LocalResourceProvider<CommonsConfiguration, TitanGraph, GraphTraversalSource> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -44,9 +47,11 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
     private GraphTraversalSource client;
 
     @Override
-    public CommonsConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public CommonsConfiguration configure(TestContext testContext,
+            LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
-        String storageDirectory = fileSystemUtil.createPath("target", "elasticsearch", testName);
+        String storageDirectory = fileSystemUtil.createPath("target", "elasticsearch",
+                testName);
 
         CommonsConfiguration configuration = new CommonsConfiguration();
         configuration.set("storage.backend", "berkeleyje");
@@ -56,13 +61,15 @@ public class TitanBerkeleyResource implements LocalResourceProvider<CommonsConfi
     }
 
     @Override
-    public LocalResourceInstance<TitanGraph, GraphTraversalSource> start(TestContext testContext,
+    public LocalResourceInstance<TitanGraph, GraphTraversalSource> start(
+            TestContext testContext,
             LocalResource localResource,
             CommonsConfiguration config) throws Exception {
         String storageDirectory = config.get("storage.directory", String.class);
         fileSystemUtil.recreateDirectory(storageDirectory);
 
-        ModifiableConfiguration configuration = new ModifiableConfiguration(ROOT_NS, config, NONE);
+        ModifiableConfiguration configuration = new ModifiableConfiguration(ROOT_NS,
+                config, NONE);
         server = TitanFactory.open(configuration);
         client = server.traversal();
 

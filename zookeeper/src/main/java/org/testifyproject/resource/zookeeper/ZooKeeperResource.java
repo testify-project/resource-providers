@@ -16,6 +16,7 @@
 package org.testifyproject.resource.zookeeper;
 
 import java.io.File;
+
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -30,24 +31,27 @@ import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of LocalResourceProvider that provides a local ZooKeeper
- * test server and client using Apache Curator.
+ * An implementation of LocalResourceProvider that provides a local ZooKeeper test server
+ * and client using Apache Curator.
  *
  * @author saden
  */
-public class ZooKeeperResource implements LocalResourceProvider<Void, TestingServer, CuratorFramework> {
+public class ZooKeeperResource implements
+        LocalResourceProvider<Void, TestingServer, CuratorFramework> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private TestingServer server;
     private CuratorFramework client;
 
     @Override
-    public Void configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public Void configure(TestContext testContext, LocalResource localResource,
+            PropertiesReader configReader) {
         return null;
     }
 
     @Override
-    public LocalResourceInstance<TestingServer, CuratorFramework> start(TestContext testContext,
+    public LocalResourceInstance<TestingServer, CuratorFramework> start(
+            TestContext testContext,
             LocalResource localResource,
             Void config) throws Exception {
         String testName = testContext.getName();

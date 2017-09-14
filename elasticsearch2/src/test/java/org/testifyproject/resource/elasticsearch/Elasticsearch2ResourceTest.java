@@ -16,6 +16,9 @@
 package org.testifyproject.resource.elasticsearch;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -25,8 +28,6 @@ import org.elasticsearch.node.Node;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
@@ -55,7 +56,8 @@ public class Elasticsearch2ResourceTest {
         Settings.Builder config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<Node, Client> result = sut.start(testContext, localResource, config);
+        LocalResourceInstance<Node, Client> result = sut.start(testContext, localResource,
+                config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
