@@ -15,6 +15,8 @@
  */
 package org.testifyproject.resource.storm;
 
+import static org.testifyproject.guava.common.base.StandardSystemProperty.USER_DIR;
+
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.utils.Utils;
@@ -24,12 +26,10 @@ import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
-import static org.testifyproject.guava.common.base.StandardSystemProperty.USER_DIR;
 import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of LocalResourceProvider that provides a local storm
- * cluster.
+ * An implementation of LocalResourceProvider that provides a local storm cluster.
  *
  * @author saden
  */
@@ -40,7 +40,8 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
     private LocalCluster localCluster;
 
     @Override
-    public Void configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public Void configure(TestContext testContext, LocalResource localResource,
+            PropertiesReader configReader) {
         return null;
     }
 
@@ -59,11 +60,12 @@ public class StormResource implements LocalResourceProvider<Void, ILocalCluster,
 
         return LocalResourceInstanceBuilder.builder()
                 .resource(localCluster, ILocalCluster.class)
-                .build("storm");
+                .build("storm", localResource);
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<ILocalCluster, Void> instance) throws Exception {
+    public void stop(TestContext testContext, LocalResource localResource,
+            LocalResourceInstance<ILocalCluster, Void> instance) throws Exception {
         Utils.sleep(2000);
         localCluster.shutdown();
     }

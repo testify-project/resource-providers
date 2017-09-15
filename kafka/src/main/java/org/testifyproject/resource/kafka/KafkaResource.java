@@ -18,9 +18,7 @@ package org.testifyproject.resource.kafka;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import kafka.server.KafkaConfig;
-import kafka.server.KafkaServer;
-import kafka.utils.SystemTime$;
+
 import org.apache.curator.test.TestingServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.protocol.SecurityProtocol;
@@ -31,15 +29,20 @@ import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
+
+import kafka.server.KafkaConfig;
+import kafka.server.KafkaServer;
+import kafka.utils.SystemTime$;
 import scala.Option;
 
 /**
- * An implementation of LocalResourceProvider that provides a local ZooKeeper
- * test server and client using Apache Curator.
+ * An implementation of LocalResourceProvider that provides a local ZooKeeper test server
+ * and client using Apache Curator.
  *
  * @author saden
  */
-public class KafkaResource implements LocalResourceProvider<Map<String, String>, KafkaServer, KafkaProducer> {
+public class KafkaResource implements
+        LocalResourceProvider<Map<String, String>, KafkaServer, KafkaProducer> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private KafkaServer server;
@@ -47,13 +50,17 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
     private TestingServer zkServer;
 
     @Override
-    public Map<String, String> configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public Map<String, String> configure(TestContext testContext,
+            LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String logDir = fileSystemUtil.createPath("target", "kafka", testName);
 
         Map<String, String> brokerConfig = new HashMap<>();
         brokerConfig.put("broker.id", "0");
         brokerConfig.put("zookeeper.connect", "localhost:0");
+        brokerConfig.put("zookeeper.session.timeout.ms", "10000");
+        brokerConfig.put("zookeeper.connection.timeout.ms", "10000");
+        brokerConfig.put("group.min.session.timeout.ms", "10000");
         brokerConfig.put("log.dir", logDir);
         brokerConfig.put("port", "0");
 
@@ -67,7 +74,8 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
             throws Exception {
         String testName = testContext.getName();
         //create, configure, and start a zookeeper resource
-        String zkTempDirectory = fileSystemUtil.createPath("target", "zookeeper", testName);
+        String zkTempDirectory = fileSystemUtil
+                .createPath("target", "zookeeper", testName);
         File zkDirectory = fileSystemUtil.recreateDirectory(zkTempDirectory);
         zkServer = new TestingServer(-1, zkDirectory, true);
 
@@ -89,15 +97,17 @@ public class KafkaResource implements LocalResourceProvider<Map<String, String>,
         producerConfig.put("batch.size", 16384);
         producerConfig.put("linger.ms", 1);
         producerConfig.put("buffer.memory", 33554432);
-        producerConfig.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        producerConfig.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        producerConfig.put("key.serializer",
+                "org.apache.kafka.common.serialization.StringSerializer");
+        producerConfig.put("value.serializer",
+                "org.apache.kafka.common.serialization.StringSerializer");
 
         client = new KafkaProducer<>(producerConfig);
 
         return LocalResourceInstanceBuilder.builder()
                 .resource(server)
                 .client(client, KafkaProducer.class)
-                .build("kafka");
+                .build("kafka", localResource);
     }
 
     @Override

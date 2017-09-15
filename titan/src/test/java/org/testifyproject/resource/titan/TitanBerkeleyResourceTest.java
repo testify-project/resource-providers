@@ -15,20 +15,23 @@
  */
 package org.testifyproject.resource.titan;
 
-import com.thinkaurelius.titan.core.TitanGraph;
-import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
 import org.testifyproject.annotation.Sut;
 import org.testifyproject.junit4.UnitTest;
 import org.testifyproject.trait.PropertiesReader;
+
+import com.thinkaurelius.titan.core.TitanGraph;
+import com.thinkaurelius.titan.diskstorage.configuration.backend.CommonsConfiguration;
 
 /**
  *
@@ -43,15 +46,17 @@ public class TitanBerkeleyResourceTest {
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
+        LocalResource localResource = mock(LocalResource.class, Answers.RETURNS_MOCKS);
         PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");
 
-        CommonsConfiguration config = sut.configure(testContext, localResource, configReader);
+        CommonsConfiguration config = sut.configure(testContext, localResource,
+                configReader);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<TitanGraph, GraphTraversalSource> result = sut.start(testContext, localResource, config);
+        LocalResourceInstance<TitanGraph, GraphTraversalSource> result = sut.start(
+                testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isNotEmpty();

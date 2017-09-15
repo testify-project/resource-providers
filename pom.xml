@@ -23,10 +23,10 @@
 
     <groupId>org.testifyproject.resources</groupId>
     <artifactId>parent</artifactId>
-    <version>0.9.4</version>
+    <version>0.9.5</version>
     <packaging>pom</packaging>
     
-    <name>Local Resources</name>
+    <name>[Local Resources]</name>
     <description>Parent module of reusable Testify LocalResourceProvider implementations</description>
     <url>https://testify-project.github.io/resources</url>
 
@@ -48,15 +48,13 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.version>3.1.1</maven.version>
 
-        <!-- IDE Hints -->
+        <!-- IDE Properties -->
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
-        <netbeans.checkstyle.format>true</netbeans.checkstyle.format>
         <netbeans.hint.license>apache20</netbeans.hint.license>
-        <netbeans.inceptionYear>2016</netbeans.inceptionYear>
 
         <!-- Build Dependency Versions -->
-        <testify.version>0.9.6</testify.version>
-        <buildtools.version>0.9.7</buildtools.version>
+        <testify.version>0.9.9</testify.version>
+        <buildtools.version>0.9.8</buildtools.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
@@ -97,9 +95,6 @@
         <hk2.version>2.4.0</hk2.version>
         <jersey.version>2.23.1</jersey.version>
         <guice.version>4.0</guice.version>
-
-        <!-- Misc Dependencies -->
-        <checkstyle.version>7.0</checkstyle.version>
 
     </properties>
 
@@ -503,6 +498,7 @@
                     </dependencies>
                     <configuration>
                         <configLocation>testify_checkstyle.xml</configLocation>
+                        <suppressionsLocation>testify_supressions.xml</suppressionsLocation>
                         <consoleOutput>true</consoleOutput>
                         <failsOnError>true</failsOnError>
                     </configuration>

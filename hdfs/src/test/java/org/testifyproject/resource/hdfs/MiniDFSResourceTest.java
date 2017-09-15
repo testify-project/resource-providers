@@ -15,7 +15,12 @@
  */
 package org.testifyproject.resource.hdfs;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import java.io.IOException;
+
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -23,11 +28,9 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 import org.apache.hadoop.hdfs.HdfsConfiguration;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import org.mockito.Answers;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
@@ -46,9 +49,10 @@ public class MiniDFSResourceTest {
     MiniDFSResource sut;
 
     @Test
-    public void callToStartResourceShouldReturnRequiredResource() throws IOException, Exception {
+    public void callToStartResourceShouldReturnRequiredResource() throws IOException,
+            Exception {
         TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
+        LocalResource localResource = mock(LocalResource.class, Answers.RETURNS_MOCKS);
         PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");
@@ -56,7 +60,8 @@ public class MiniDFSResourceTest {
         HdfsConfiguration config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNotNull();
 
-        LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> result = sut.start(testContext, localResource, config);
+        LocalResourceInstance<MiniDFSCluster, DistributedFileSystem> result = sut.start(
+                testContext, localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();

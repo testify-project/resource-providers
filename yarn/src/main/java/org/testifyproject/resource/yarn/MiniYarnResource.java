@@ -29,32 +29,36 @@ import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of LocalResourceProvider that provides a local mini YARN
- * cluster and a YARN client.
+ * An implementation of LocalResourceProvider that provides a local mini YARN cluster and
+ * a YARN client.
  *
  * @author saden
  */
-public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration, MiniYARNCluster, YarnClient> {
+public class MiniYarnResource implements
+        LocalResourceProvider<YarnConfiguration, MiniYARNCluster, YarnClient> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
     private MiniYARNCluster server;
     private YarnClient client;
 
     @Override
-    public YarnConfiguration configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public YarnConfiguration configure(TestContext testContext,
+            LocalResource localResource, PropertiesReader configReader) {
         String testName = testContext.getName();
         String logDirectory = fileSystemUtil.createPath("target", "yarn", testName);
 
         YarnConfiguration configuration = new YarnConfiguration();
         configuration.set(YarnConfiguration.YARN_APP_CONTAINER_LOG_DIR, logDirectory);
         configuration.setInt(YarnConfiguration.RM_SCHEDULER_MINIMUM_ALLOCATION_MB, 64);
-        configuration.setClass(YarnConfiguration.RM_SCHEDULER, FifoScheduler.class, ResourceScheduler.class);
+        configuration.setClass(YarnConfiguration.RM_SCHEDULER, FifoScheduler.class,
+                ResourceScheduler.class);
 
         return configuration;
     }
 
     @Override
-    public LocalResourceInstance<MiniYARNCluster, YarnClient> start(TestContext testContext,
+    public LocalResourceInstance<MiniYARNCluster, YarnClient> start(
+            TestContext testContext,
             LocalResource localResource,
             YarnConfiguration config)
             throws Exception {
@@ -71,7 +75,7 @@ public class MiniYarnResource implements LocalResourceProvider<YarnConfiguration
         return LocalResourceInstanceBuilder.builder()
                 .resource(server)
                 .client(client)
-                .build("yarn");
+                .build("yarn", localResource);
     }
 
     @Override

@@ -15,6 +15,10 @@
  */
 package org.testifyproject.resource.storm;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+
 import org.apache.storm.Config;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.generated.AlreadyAliveException;
@@ -23,11 +27,9 @@ import org.apache.storm.generated.NotAliveException;
 import org.apache.storm.testing.TestWordSpout;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.utils.Utils;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
+import org.mockito.Answers;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
@@ -48,9 +50,10 @@ public class StormResourceTest {
 
     @Test
     public void callToStartResourceShouldReturnRequiredResource()
-            throws AlreadyAliveException, NotAliveException, InvalidTopologyException, Exception {
+            throws AlreadyAliveException, NotAliveException, InvalidTopologyException,
+            Exception {
         TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
+        LocalResource localResource = mock(LocalResource.class, Answers.RETURNS_MOCKS);
         PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");
@@ -58,7 +61,8 @@ public class StormResourceTest {
         Void config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNull();
 
-        LocalResourceInstance<ILocalCluster, Void> result = sut.start(testContext, localResource, config);
+        LocalResourceInstance<ILocalCluster, Void> result = sut.start(testContext,
+                localResource, config);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isEmpty();
@@ -69,8 +73,10 @@ public class StormResourceTest {
         TopologyBuilder builder = new TopologyBuilder();
 
         builder.setSpout("word", new TestWordSpout(), 10);
-        builder.setBolt("exclaim1", new ExclamationTopology.ExclamationBolt(), 3).shuffleGrouping("word");
-        builder.setBolt("exclaim2", new ExclamationTopology.ExclamationBolt(), 2).shuffleGrouping("exclaim1");
+        builder.setBolt("exclaim1", new ExclamationTopology.ExclamationBolt(), 3)
+                .shuffleGrouping("word");
+        builder.setBolt("exclaim2", new ExclamationTopology.ExclamationBolt(), 2)
+                .shuffleGrouping("exclaim1");
 
         Config conf = new Config();
         conf.setDebug(true);

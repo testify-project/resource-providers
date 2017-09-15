@@ -28,12 +28,13 @@ import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
 
 /**
- * An implementation of LocalResourceProvider that provides a local
- * Elasticsearch node and client.
+ * An implementation of LocalResourceProvider that provides a local Elasticsearch node and
+ * client.
  *
  * @author saden
  */
-public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Builder, Node, Client> {
+public class Elasticsearch2Resource implements
+        LocalResourceProvider<Settings.Builder, Node, Client> {
 
     private final FileSystemUtil fileSystemUtil = FileSystemUtil.INSTANCE;
 
@@ -41,7 +42,8 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
     private Client client;
 
     @Override
-    public Settings.Builder configure(TestContext testContext, LocalResource localResource, PropertiesReader configReader) {
+    public Settings.Builder configure(TestContext testContext, LocalResource localResource,
+            PropertiesReader configReader) {
         String testName = testContext.getName();
         String pathHome = fileSystemUtil.createPath("target", "elasticsearch", testName);
 
@@ -70,11 +72,12 @@ public class Elasticsearch2Resource implements LocalResourceProvider<Settings.Bu
         return LocalResourceInstanceBuilder.builder()
                 .resource(node)
                 .client(client, Client.class)
-                .build("elasticsearch2");
+                .build("elasticsearch2", localResource);
     }
 
     @Override
-    public void stop(TestContext testContext, LocalResource localResource, LocalResourceInstance<Node, Client> instance)
+    public void stop(TestContext testContext, LocalResource localResource,
+            LocalResourceInstance<Node, Client> instance)
             throws Exception {
         client.close();
         node.close();

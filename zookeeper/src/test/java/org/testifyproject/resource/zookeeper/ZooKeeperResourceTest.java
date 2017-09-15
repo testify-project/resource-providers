@@ -15,13 +15,15 @@
  */
 package org.testifyproject.resource.zookeeper;
 
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.test.TestingServer;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.test.TestingServer;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.TestContext;
 import org.testifyproject.annotation.LocalResource;
@@ -42,7 +44,7 @@ public class ZooKeeperResourceTest {
     @Test
     public void callToStartResourceShouldReturnRequiredResource() throws Exception {
         TestContext testContext = mock(TestContext.class);
-        LocalResource localResource = mock(LocalResource.class);
+        LocalResource localResource = mock(LocalResource.class, Answers.RETURNS_MOCKS);
         PropertiesReader configReader = mock(PropertiesReader.class);
 
         given(testContext.getName()).willReturn("test");
@@ -50,7 +52,8 @@ public class ZooKeeperResourceTest {
         Void config = sut.configure(testContext, localResource, configReader);
         assertThat(config).isNull();
 
-        LocalResourceInstance<TestingServer, CuratorFramework> result = sut.start(testContext, localResource, null);
+        LocalResourceInstance<TestingServer, CuratorFramework> result = sut.start(
+                testContext, localResource, null);
 
         assertThat(result).isNotNull();
         assertThat(result.getClient()).isPresent();
