@@ -13,6 +13,10 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
+## [0.9.5] - 2017-09-15
+### Changed
+Updated versions of Testify and Build-Tools dependencies
+
 ## [0.9.4] - 2017-07-16
 ### Changed
 - Updated to the latest Testify API version 0.9.6
