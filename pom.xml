@@ -53,8 +53,8 @@
         <netbeans.hint.license>apache20</netbeans.hint.license>
 
         <!-- Build Dependency Versions -->
-        <testify.version>0.9.9-SNAPSHOT</testify.version>
-        <buildtools.version>0.9.8-SNAPSHOT</buildtools.version>
+        <testify.version>0.9.9</testify.version>
+        <buildtools.version>0.9.8</buildtools.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
