@@ -39,6 +39,7 @@
         <module>kafka</module>
         <module>storm</module>
         <module>elasticsearch2</module>
+        <module>local-resources-bom</module>
     </modules>
     
     <properties>
