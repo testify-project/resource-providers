@@ -28,8 +28,14 @@
     <name>Kafka Resource</name>
     
     <properties>
-        <resource.version>0.10.0.0</resource.version>
-        <curator.version>2.11.0</curator.version>
+        <resource.version>0.11.0.1</resource.version>
+        <!-- 
+            Note that Kafka as a dependency on a specific version of Zookeeper (3.4.10).
+            It so happens that that's the same version this version of curator depends on.
+            Be sure to make sure these versions are compatible otherwise you will run into 
+            runtime issues.
+        -->
+        <curator.version>2.12.0</curator.version>
     </properties>
     
     <dependencies>

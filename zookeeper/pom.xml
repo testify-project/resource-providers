@@ -28,8 +28,8 @@
     <name>ZooKeeper Resource</name>
     
     <properties>
-        <!-- Supported Range [2.6.0,3.3.0] -->
-        <resource.version>3.3.0</resource.version>
+        <!-- Supported Range [2.6.0,4.0.0] -->
+        <resource.version>4.0.0</resource.version>
     </properties>
     
     <dependencies>

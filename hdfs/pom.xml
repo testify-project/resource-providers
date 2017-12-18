@@ -28,8 +28,8 @@
     <name>HDFS Resource</name>
     
     <properties>
-        <!-- Supported Range [2.4.0,2.7.3] -->
-        <resource.version>2.7.3</resource.version>
+        <!-- Supported Range [2.4.0,2.8.1] -->
+        <resource.version>2.8.1</resource.version>
     </properties>
     
     <dependencies>

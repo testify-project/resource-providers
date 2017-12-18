@@ -21,7 +21,9 @@ import java.util.Map;
 
 import org.apache.curator.test.TestingServer;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.common.network.ListenerName;
 import org.apache.kafka.common.protocol.SecurityProtocol;
+import org.apache.kafka.common.utils.Time;
 import org.testifyproject.LocalResourceInstance;
 import org.testifyproject.LocalResourceProvider;
 import org.testifyproject.TestContext;
@@ -30,14 +32,16 @@ import org.testifyproject.core.LocalResourceInstanceBuilder;
 import org.testifyproject.core.util.FileSystemUtil;
 import org.testifyproject.trait.PropertiesReader;
 
+import kafka.metrics.KafkaMetricsReporter;
 import kafka.server.KafkaConfig;
 import kafka.server.KafkaServer;
-import kafka.utils.SystemTime$;
 import scala.Option;
+import scala.collection.Seq;
+import scala.collection.mutable.ArraySeq;
 
 /**
- * An implementation of LocalResourceProvider that provides a local ZooKeeper test server
- * and client using Apache Curator.
+ * An implementation of LocalResourceProvider that provides a local ZooKeeper test server and
+ * client using Apache Curator.
  *
  * @author saden
  */
@@ -74,8 +78,7 @@ public class KafkaResource implements
             throws Exception {
         String testName = testContext.getName();
         //create, configure, and start a zookeeper resource
-        String zkTempDirectory = fileSystemUtil
-                .createPath("target", "zookeeper", testName);
+        String zkTempDirectory = fileSystemUtil.createPath("target", "zookeeper", testName);
         File zkDirectory = fileSystemUtil.recreateDirectory(zkTempDirectory);
         zkServer = new TestingServer(-1, zkDirectory, true);
 
@@ -83,13 +86,16 @@ public class KafkaResource implements
         String logDir = config.get("log.dir");
         File logDirectory = fileSystemUtil.recreateDirectory(logDir);
         config.put("log.dir", logDirectory.getAbsolutePath());
+
         KafkaConfig kafkaConfig = new KafkaConfig(config);
         Option<String> threadNamePrefix = Option.apply(null);
-        SystemTime$ time = kafka.utils.SystemTime$.MODULE$;
-        server = new KafkaServer(kafkaConfig, time, threadNamePrefix);
+        Seq<KafkaMetricsReporter> metrics = new ArraySeq<>(0);
+
+        server = new KafkaServer(kafkaConfig, Time.SYSTEM, threadNamePrefix, metrics);
         server.startup();
 
-        int port = server.boundPort(SecurityProtocol.PLAINTEXT);
+        ListenerName listenerName = ListenerName.forSecurityProtocol(SecurityProtocol.PLAINTEXT);
+        int port = server.boundPort(listenerName);
         Map<String, Object> producerConfig = new HashMap<>();
         producerConfig.put("bootstrap.servers", "localhost:" + port);
         producerConfig.put("acks", "all");
