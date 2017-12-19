@@ -28,7 +28,7 @@
     
     <name>[Local Resources]</name>
     <description>Parent module of reusable Testify LocalResourceProvider implementations</description>
-    <url>https://testify-project.github.io/resources</url>
+    <url>https://testify-project.github.io/local-resources</url>
 
     <modules>
         <module>hsql</module>
@@ -91,7 +91,7 @@
 
     <organization>
         <name>Sharmarke Aden</name>
-        <url>https://testify-project.github.io/resources</url>
+        <url>https://testify-project.github.io/local-resources</url>
     </organization>
 
     <developers>
@@ -116,13 +116,13 @@
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/testify-project/resources/issues</url>
+        <url>https://github.com/testify-project/local-resources/issues</url>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/testify-project/resources.git</connection>
-        <developerConnection>scm:git:https://github.com/testify-project/resources.git</developerConnection>
-        <url>https://github.com/testify-project/resources.git/tree/${project.scm.tag}</url>
+        <connection>scm:git:https://github.com/testify-project/local-resources.git</connection>
+        <developerConnection>scm:git:https://github.com/testify-project/local-resources.git</developerConnection>
+        <url>https://github.com/testify-project/local-resources.git/tree/${project.scm.tag}</url>
         <tag>master</tag>
     </scm>
 
