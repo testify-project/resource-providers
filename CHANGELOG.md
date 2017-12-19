@@ -12,6 +12,11 @@ was added, changed, deprecated, removed, fix and security fixes.
 - Security - Lists security fixes to security vulnerabilities
 
 ## [Unreleased]
+## [1.0.0] - 2017-12-18
+### Changed
+- Changed groupId from `org.testifyproject.resources` to `org.testifyproject.local-resources`
+- Updated Testify Dependency Version to 1.0.0
+- Updated local resources versions to the latest released version
 
 ## [0.9.5] - 2017-09-15
 ### Changed
