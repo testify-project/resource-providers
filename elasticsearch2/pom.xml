@@ -19,19 +19,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.testifyproject.resources</groupId>
+        <groupId>org.testifyproject.local-resources</groupId>
         <artifactId>parent</artifactId>
-        <version>0.9.5</version>
+        <version>1.0.0</version>
     </parent>
 
-    <groupId>org.testifyproject.resources</groupId>
+    <groupId>org.testifyproject.local-resources</groupId>
     <artifactId>elasticsearch2</artifactId>
     <name>Elasticsearch 2 Resource</name>
 
     <properties>
         <!-- Supported Range [2.0.0,2.4.4] -->
-        <resource.version>2.4.4</resource.version>
-        <jna.version>4.2.2</jna.version>
+        <resource.version>2.4.6</resource.version>
+        <jna.version>4.5.0</jna.version>
     </properties>
     
     <dependencies>

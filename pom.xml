@@ -21,14 +21,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.testifyproject.resources</groupId>
+    <groupId>org.testifyproject.local-resources</groupId>
     <artifactId>parent</artifactId>
-    <version>0.9.5</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     
     <name>[Local Resources]</name>
     <description>Parent module of reusable Testify LocalResourceProvider implementations</description>
-    <url>https://testify-project.github.io/resources</url>
+    <url>https://testify-project.github.io/local-resources</url>
 
     <modules>
         <module>hsql</module>
@@ -39,6 +39,7 @@
         <module>kafka</module>
         <module>storm</module>
         <module>elasticsearch2</module>
+        <module>local-resources-bom</module>
     </modules>
     
     <properties>
@@ -53,8 +54,8 @@
         <netbeans.hint.license>apache20</netbeans.hint.license>
 
         <!-- Build Dependency Versions -->
-        <testify.version>0.9.9</testify.version>
-        <buildtools.version>0.9.8</buildtools.version>
+        <testify.version>1.0.0</testify.version>
+        <buildtools.version>1.0.0</buildtools.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
@@ -78,24 +79,8 @@
 
         <!-- Test Dependencies -->
         <junit.version>4.12</junit.version>
-        <testng.version>6.9.10</testng.version>
-        <mockito.version>2.5.4</mockito.version>
-        <assertj.version>3.5.2</assertj.version>
-
-        <!-- Logging Dependencies -->
-        <slf4j.version>1.7.18</slf4j.version>
-        <logback.version>1.1.6</logback.version>
-        <jansi.version>1.11</jansi.version>
-
-        <!-- General Dependencies -->
-        <javax.inject.version>1</javax.inject.version>
-        <javax.servlet.version>3.1.0</javax.servlet.version>
-        <spring.version>4.2.3.RELEASE</spring.version>
-        <springboot.version>1.4.0.RELEASE</springboot.version>
-        <hk2.version>2.4.0</hk2.version>
-        <jersey.version>2.23.1</jersey.version>
-        <guice.version>4.0</guice.version>
-
+        <mockito.version>2.11.0</mockito.version>
+        <assertj.version>3.8.0</assertj.version>
     </properties>
 
     <prerequisites>
@@ -106,7 +91,7 @@
 
     <organization>
         <name>Sharmarke Aden</name>
-        <url>https://testify-project.github.io/resources</url>
+        <url>https://testify-project.github.io/local-resources</url>
     </organization>
 
     <developers>
@@ -131,13 +116,13 @@
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/testify-project/resources/issues</url>
+        <url>https://github.com/testify-project/local-resources/issues</url>
     </issueManagement>
 
     <scm>
-        <connection>scm:git:https://github.com/testify-project/resources.git</connection>
-        <developerConnection>scm:git:https://github.com/testify-project/resources.git</developerConnection>
-        <url>https://github.com/testify-project/resources.git/tree/${project.scm.tag}</url>
+        <connection>scm:git:https://github.com/testify-project/local-resources.git</connection>
+        <developerConnection>scm:git:https://github.com/testify-project/local-resources.git</developerConnection>
+        <url>https://github.com/testify-project/local-resources.git/tree/${project.scm.tag}</url>
         <tag>master</tag>
     </scm>
 
@@ -682,12 +667,6 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>${testng.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>

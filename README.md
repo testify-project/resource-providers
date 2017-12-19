@@ -1,9 +1,9 @@
 # Resources
-[![Build Status](https://travis-ci.org/testify-project/resources.svg?branch=develop)](https://travis-ci.org/testify-project/resources)
+[![Build Status](https://travis-ci.org/testify-project/local-resources.svg?branch=develop)](https://travis-ci.org/testify-project/local-resources)
 [![Join the chat on Gitter](https://badges.gitter.im/testify-project/Lobby.svg)](https://gitter.im/testify-project/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![CodecovIO](https://codecov.io/github/testify-project/resources/coverage.svg?branch=develop)](https://codecov.io/github/testify-project/resources?branch=develop)
+[![CodecovIO](https://codecov.io/github/testify-project/local-resources/coverage.svg?branch=develop)](https://codecov.io/github/testify-project/local-resources?branch=develop)
 [![Maven Central](https://img.shields.io/maven-central/v/org.testifyproject.resources/parent.svg)]()
-[![License](https://img.shields.io/github/license/testify-project/resources.svg)](LICENSE)
+[![License](https://img.shields.io/github/license/testify-project/local-resources.svg)](LICENSE)
 
 ## Overview
 A repository that contains reusable collection of test resource provider implementations.
@@ -28,13 +28,13 @@ Testify uses a Maven-based build system. To build from source follow the bellow 
 
 ### Check out sources
 ```
-$ git clone git@github.com:testify-project/resources.git
+$ git clone git@github.com:testify-project/local-resources.git
 ```
 
 or
 
 ```
-$ git clone https://github.com/testify-project/resources.git
+$ git clone https://github.com/testify-project/local-resources.git
 ```
 
 ### Install all Testify jars into your local Maven cache
@@ -55,6 +55,6 @@ The Testify is released under [Apache Software License, Version 2.0](LICENSE).
 
 Enjoy and keep on Testifying!
 
-[github-issues]: https://github.com/testify-project/resources/issues
-[github-issues-new]: https://github.com/testify-project/resources/issues/new
+[github-issues]: https://github.com/testify-project/local-resources/issues
+[github-issues-new]: https://github.com/testify-project/local-resources/issues/new
 [gitter]: https://gitter.im/testify-project/Lobby

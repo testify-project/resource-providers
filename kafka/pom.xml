@@ -19,17 +19,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.testifyproject.resources</groupId>
+        <groupId>org.testifyproject.local-resources</groupId>
         <artifactId>parent</artifactId>
-        <version>0.9.5</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>kafka</artifactId>
     <name>Kafka Resource</name>
     
     <properties>
-        <resource.version>0.10.0.0</resource.version>
-        <curator.version>2.11.0</curator.version>
+        <resource.version>0.11.0.1</resource.version>
+        <!-- 
+            Note that Kafka as a dependency on a specific version of Zookeeper (3.4.10).
+            It so happens that that's the same version this version of curator depends on.
+            Be sure to make sure these versions are compatible otherwise you will run into 
+            runtime issues.
+        -->
+        <curator.version>2.12.0</curator.version>
     </properties>
     
     <dependencies>
