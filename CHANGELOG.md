@@ -13,7 +13,7 @@ was added, changed, deprecated, removed, fix and security fixes.
 
 ## [Unreleased]
 
-## [1.0.0] - 2017-12-18
+## [1.0.1] - 2017-12-19
 ### Fixed
 - Insured that `local-resources-bom` dependencies are test scoped.
 
