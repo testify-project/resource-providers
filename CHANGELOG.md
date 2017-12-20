@@ -12,6 +12,11 @@ was added, changed, deprecated, removed, fix and security fixes.
 - Security - Lists security fixes to security vulnerabilities
 
 ## [Unreleased]
+
+## [1.0.0] - 2017-12-18
+### Fixed
+- Insured that `local-resources-bom` dependencies are test scoped.
+
 ## [1.0.0] - 2017-12-18
 ### Changed
 - Changed groupId from `org.testifyproject.resources` to `org.testifyproject.local-resources`

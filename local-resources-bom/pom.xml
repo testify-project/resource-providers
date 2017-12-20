@@ -38,41 +38,49 @@
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>elasticsearch2</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>hdfs</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>hsql</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>kafka</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>storm</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>titan</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>yarn</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.testifyproject.local-resources</groupId>
                 <artifactId>zookeeper</artifactId>
                 <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
