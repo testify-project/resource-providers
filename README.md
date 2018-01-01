@@ -48,7 +48,9 @@ $ mvn clean install
 ```
 
 ## Staying in Touch
-Hit us up on [Gitter][gitter].
+- [Gitter][gitter].
+- [Users Mailing List][users-groups] ([testifyproject-users@googlegroups.com][users-email])
+- [Developers Mailing List][devs-groups] ([testifyproject-devs@googlegroups.com][devs-email])
 
 ## License
 The Testify is released under [Apache Software License, Version 2.0](LICENSE).
@@ -58,3 +60,7 @@ Enjoy and keep on Testifying!
 [github-issues]: https://github.com/testify-project/local-resources/issues
 [github-issues-new]: https://github.com/testify-project/local-resources/issues/new
 [gitter]: https://gitter.im/testify-project/Lobby
+[users-email]: mailto:testifyproject-users@googlegroups.com
+[users-groups]: https://groups.google.com/forum/#!forum/testifyproject-users
+[devs-email]: mailto:testifyproject-devs@googlegroups.com
+[devs-groups]: https://groups.google.com/forum/#!forum/testifyproject-devs
