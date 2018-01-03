@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2016-2017 Testify Project.
+    Copyright 2016-2018 Testify Project.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 
     <groupId>org.testifyproject.local-resources</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     
     <name>[Local Resources]</name>
@@ -52,10 +52,10 @@
         <!-- IDE Properties -->
         <netbeans.compile.on.save>none</netbeans.compile.on.save>
         <netbeans.hint.license>apache20</netbeans.hint.license>
+        <netbeans.inceptionYear>2016</netbeans.inceptionYear>
 
-        <!-- Build Dependency Versions -->
-        <testify.version>1.0.1</testify.version>
-        <buildtools.version>1.0.0</buildtools.version>
+        <!-- Testify Versiongit commit -m "Prepare release $RELEASE_VERSION" .s -->
+        <testify.version>1.0.2</testify.version>
 
         <!-- Plugin Versions -->
         <plugin.resource>3.0.1</plugin.resource>
@@ -421,6 +421,7 @@
                     <executions>
                         <execution>
                             <id>license-check</id>
+                            <phase>process-resources</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
@@ -428,13 +429,18 @@
                     </executions>
                     <dependencies>
                         <dependency>
-                            <groupId>org.testifyproject.buildtools</groupId>
+                            <groupId>org.testifyproject.tools</groupId>
                             <artifactId>coding-conventions</artifactId>
-                            <version>${buildtools.version}</version>
+                            <version>${testify.version}</version>
                         </dependency>
                     </dependencies>
                     <configuration>
                         <header>license.txt</header>
+                        <errorMessage> Please insure the file(s) listed above:
+                            a) have a license header
+                            b) the header is formatted correctly
+                            c) the header contains the correct license year date range
+                        </errorMessage>
                         <properties>
                             <owner>${project.organization.name}</owner>
                         </properties>
@@ -449,6 +455,7 @@
                             <exclude>**/*.enc</exclude>
                             <exclude>**/*.tar</exclude>
                             <exclude>**/*.sh</exclude>
+                            <exclude>**/*.proto</exclude>
                             <exclude>**/settings.xml</exclude>
                             <exclude>**/nbactions.xml</exclude>
                             <exclude>LICENSE</exclude>
@@ -457,8 +464,8 @@
                             <exclude>nbproject/**</exclude>
                             <exclude>secrets/**</exclude>
                             <exclude>archetype.properties</exclude>
-                            <exclude>mvnw*</exclude>
                             <exclude>.mvn/**</exclude>
+                            <exclude>mvnw*</exclude>
                             <exclude>CODEOWNERS</exclude>
                         </excludes>
                     </configuration>
@@ -476,9 +483,9 @@
                     </executions>
                     <dependencies>
                         <dependency>
-                            <groupId>org.testifyproject.buildtools</groupId>
+                            <groupId>org.testifyproject.tools</groupId>
                             <artifactId>coding-conventions</artifactId>
-                            <version>${buildtools.version}</version>
+                            <version>${testify.version}</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -629,7 +636,7 @@
         <dependency>
             <groupId>org.testifyproject.external</groupId>
             <artifactId>external-guava</artifactId>
-            <version>${buildtools.version}</version>
+            <version>${testify.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testifyproject.tools</groupId>
@@ -684,8 +691,8 @@
             <dependency>
                 <groupId>org.testifyproject.tools</groupId>
                 <artifactId>test-logger</artifactId>
-                <version>${buildtools.version}</version>
-                <scope>provided</scope>
+                <version>${testify.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
