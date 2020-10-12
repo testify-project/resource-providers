@@ -78,7 +78,7 @@
         <plugin.sonarqube>3.2</plugin.sonarqube>
 
         <!-- Test Dependencies -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <mockito.version>2.11.0</mockito.version>
         <assertj.version>3.8.0</assertj.version>
     </properties>
